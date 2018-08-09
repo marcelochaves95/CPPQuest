@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FCA8F2AF211C70B100485A82 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCA8F2AE211C70B100485A82 /* main.cpp */; };
 		FCA8F2B7211C71E500485A82 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCA8F2B5211C71E500485A82 /* Item.cpp */; };
 		FCA8F2BA211C720E00485A82 /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCA8F2B8211C720E00485A82 /* GameObject.cpp */; };
 		FCA8F2BD211C727E00485A82 /* Printable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FCA8F2BB211C727E00485A82 /* Printable.cpp */; };
@@ -28,7 +27,6 @@
 
 /* Begin PBXFileReference section */
 		FCA8F2AB211C70B100485A82 /* CPPQuest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CPPQuest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FCA8F2AE211C70B100485A82 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		FCA8F2B5211C71E500485A82 /* Item.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cpp; sourceTree = "<group>"; };
 		FCA8F2B6211C71E500485A82 /* Item.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Item.hpp; sourceTree = "<group>"; };
 		FCA8F2B8211C720E00485A82 /* GameObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
@@ -53,7 +51,7 @@
 		FCA8F2A2211C70B100485A82 = {
 			isa = PBXGroup;
 			children = (
-				FCA8F2AD211C70B100485A82 /* CPPQuest */,
+				FCA8F2AD211C70B100485A82 /* CPPQuestConsole */,
 				FCA8F2AC211C70B100485A82 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,10 +64,9 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FCA8F2AD211C70B100485A82 /* CPPQuest */ = {
+		FCA8F2AD211C70B100485A82 /* CPPQuestConsole */ = {
 			isa = PBXGroup;
 			children = (
-				FCA8F2AE211C70B100485A82 /* main.cpp */,
 				FCA8F2B5211C71E500485A82 /* Item.cpp */,
 				FCA8F2B6211C71E500485A82 /* Item.hpp */,
 				FCA8F2B8211C720E00485A82 /* GameObject.cpp */,
@@ -79,7 +76,7 @@
 				FCA8F2BE211C728F00485A82 /* Player.cpp */,
 				FCA8F2BF211C728F00485A82 /* Player.hpp */,
 			);
-			path = CPPQuest;
+			path = CPPQuestConsole;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,7 +136,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FCA8F2B7211C71E500485A82 /* Item.cpp in Sources */,
-				FCA8F2AF211C70B100485A82 /* main.cpp in Sources */,
 				FCA8F2BA211C720E00485A82 /* GameObject.cpp in Sources */,
 				FCA8F2BD211C727E00485A82 /* Printable.cpp in Sources */,
 				FCA8F2C0211C728F00485A82 /* Player.cpp in Sources */,
