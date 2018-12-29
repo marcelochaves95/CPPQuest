@@ -1,0 +1,3 @@
+/Users/marcelochaves95/Projects/SesamoEngine/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/marcelochaves95/Projects/SesamoEngine/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/marcelochaves95/Projects/SesamoEngine/cmake-build-debug/CMakeFiles/SesamoEngine.dir

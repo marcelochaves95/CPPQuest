@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/SesamoEngine.dir/main.cpp.o"
+  "CMakeFiles/SesamoEngine.dir/Source_Files/main.cpp.o"
   "SesamoEngine.pdb"
   "SesamoEngine"
 )

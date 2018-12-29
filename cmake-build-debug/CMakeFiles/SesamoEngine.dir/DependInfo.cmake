@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/Users/marcelochaves95/Desktop/SesamoEngine/main.cpp" "/Users/marcelochaves95/Desktop/SesamoEngine/cmake-build-debug/CMakeFiles/SesamoEngine.dir/main.cpp.o"
+  "/Users/marcelochaves95/Projects/SesamoEngine/Source Files/main.cpp" "/Users/marcelochaves95/Projects/SesamoEngine/cmake-build-debug/CMakeFiles/SesamoEngine.dir/Source_Files/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")
 

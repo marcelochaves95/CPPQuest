@@ -48,10 +48,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/marcelochaves95/Desktop/SesamoEngine
+CMAKE_SOURCE_DIR = /Users/marcelochaves95/Projects/SesamoEngine
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/marcelochaves95/Desktop/SesamoEngine/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/marcelochaves95/Projects/SesamoEngine/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/marcelochaves95/Desktop/SesamoEngine/cmake-build-debug/CMakeFiles /Users/marcelochaves95/Desktop/SesamoEngine/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/marcelochaves95/Projects/SesamoEngine/cmake-build-debug/CMakeFiles /Users/marcelochaves95/Projects/SesamoEngine/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/marcelochaves95/Desktop/SesamoEngine/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/marcelochaves95/Projects/SesamoEngine/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,32 +123,32 @@ SesamoEngine/fast:
 	$(MAKE) -f CMakeFiles/SesamoEngine.dir/build.make CMakeFiles/SesamoEngine.dir/build
 .PHONY : SesamoEngine/fast
 
-main.o: main.cpp.o
+Source_Files/main.o: Source_Files/main.cpp.o
 
-.PHONY : main.o
+.PHONY : Source_Files/main.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/SesamoEngine.dir/build.make CMakeFiles/SesamoEngine.dir/main.cpp.o
-.PHONY : main.cpp.o
+Source_Files/main.cpp.o:
+	$(MAKE) -f CMakeFiles/SesamoEngine.dir/build.make CMakeFiles/SesamoEngine.dir/Source_Files/main.cpp.o
+.PHONY : Source_Files/main.cpp.o
 
-main.i: main.cpp.i
+Source_Files/main.i: Source_Files/main.cpp.i
 
-.PHONY : main.i
+.PHONY : Source_Files/main.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/SesamoEngine.dir/build.make CMakeFiles/SesamoEngine.dir/main.cpp.i
-.PHONY : main.cpp.i
+Source_Files/main.cpp.i:
+	$(MAKE) -f CMakeFiles/SesamoEngine.dir/build.make CMakeFiles/SesamoEngine.dir/Source_Files/main.cpp.i
+.PHONY : Source_Files/main.cpp.i
 
-main.s: main.cpp.s
+Source_Files/main.s: Source_Files/main.cpp.s
 
-.PHONY : main.s
+.PHONY : Source_Files/main.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/SesamoEngine.dir/build.make CMakeFiles/SesamoEngine.dir/main.cpp.s
-.PHONY : main.cpp.s
+Source_Files/main.cpp.s:
+	$(MAKE) -f CMakeFiles/SesamoEngine.dir/build.make CMakeFiles/SesamoEngine.dir/Source_Files/main.cpp.s
+.PHONY : Source_Files/main.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... SesamoEngine"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... Source_Files/main.o"
+	@echo "... Source_Files/main.i"
+	@echo "... Source_Files/main.s"
 .PHONY : help
 
 
