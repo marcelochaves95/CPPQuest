@@ -4,7 +4,7 @@ namespace Linguagem
     {
         #region IOperador Members
 
-        private string _cadeia = "<>";
+        private string _cadeia = "!=";
         public override Cadeia Cadeia
         {
             get
