@@ -1,1 +1,1 @@
-# Sesamo Game Engine
+# Sesamo - The compiler
