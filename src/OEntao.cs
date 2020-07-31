@@ -1,6 +1,6 @@
 namespace Linguagem
 {
-    public class OEntao : OComparacao, IOperador
+    public class OEntao : Operador, IOperador
     {
         #region IOperador Members
 

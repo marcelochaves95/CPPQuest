@@ -1,10 +1,10 @@
 namespace Linguagem
 {
-    public class OSenao : Operador, IOperador
+    public class OFimSe : Operador, IOperador
     {
         #region IOperador Members
 
-        private string _cadeia = "else";
+        private string _cadeia = "endif";
         public override Cadeia Cadeia
         {
             get { return new Cadeia(_cadeia); }

@@ -1,6 +1,6 @@
 namespace Linguagem
 {
-    public class OSe : OComparacao, IOperador
+    public class OSe : Operador, IOperador
     {
         #region IOperador Members
 
