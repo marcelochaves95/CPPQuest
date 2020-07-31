@@ -7,10 +7,7 @@ namespace Linguagem
         private string _cadeia = "!=";
         public override Cadeia Cadeia
         {
-            get
-            {
-                return new Cadeia(_cadeia);
-            }
+            get { return new Cadeia(_cadeia); }
         }
 
         #endregion

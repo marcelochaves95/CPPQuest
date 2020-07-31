@@ -1,6 +1,6 @@
 namespace Linguagem
 {
-    public class OIgual : OComparacao, IOperador
+    public class OMaior : OComparacao, IOperador
     {
         #region IOperador Members
 
@@ -12,11 +12,11 @@ namespace Linguagem
 
         #endregion
 
-        public OIgual()
+        public OMaior()
         {
         }
 
-        public OIgual(int NumeroLinha)
+        public OMaior(int NumeroLinha)
         {
             this.Linha = NumeroLinha;
         }
