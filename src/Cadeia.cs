@@ -11,14 +11,8 @@ namespace Linguagem
 
         public string Valor
         {
-            get
-            {
-                return valor_retorno;
-            }
-            set
-            {
-                valor_retorno = value;
-            }
+            get { return valor_retorno; }
+            set { valor_retorno = value; }
         }
     }
 }
