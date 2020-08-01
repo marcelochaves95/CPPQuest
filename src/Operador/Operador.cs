@@ -1,6 +1,6 @@
 namespace Linguagem
 {
-    public class Operador : Token, IOperador
+    public abstract class Operador : Token, IOperador
     {
         #region IOperador Members
 

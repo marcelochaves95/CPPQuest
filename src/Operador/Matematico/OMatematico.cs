@@ -1,6 +1,6 @@
 namespace Linguagem
 {
-    public class OMatematico : Operador
+    public abstract class OMatematico : Operador
     {
     }
 }

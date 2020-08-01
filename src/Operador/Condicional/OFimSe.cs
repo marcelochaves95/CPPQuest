@@ -12,11 +12,11 @@ namespace Linguagem
 
         #endregion
 
-        public OSenao()
+        public OFimSe()
         {
         }
 
-        public OSenao(int NumeroLinha)
+        public OFimSe(int NumeroLinha)
         {
             this.Linha = NumeroLinha;
         }

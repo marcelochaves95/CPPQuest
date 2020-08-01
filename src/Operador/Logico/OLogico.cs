@@ -1,6 +1,6 @@
 namespace Linguagem
 {
-    public class OLogico : Operador
+    public abstract class OLogico : Operador
     {
     }
 }

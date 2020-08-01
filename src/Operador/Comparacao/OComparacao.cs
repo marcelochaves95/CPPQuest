@@ -1,6 +1,6 @@
 namespace Linguagem
 {
-    public class OComparacao : Operador
+    public abstract class OComparacao : Operador
     {
     }
 }
