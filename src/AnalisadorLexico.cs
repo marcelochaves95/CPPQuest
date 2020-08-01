@@ -121,7 +121,7 @@ namespace Linguagem
                     //*** SE FOR UMA STRING
                     if (valor[0] == '"')
                     {
-                        CodigoFonte.Add(new Valor(valor, Tipos.txt, Linha));
+                        CodigoFonte.Add(new Valor(valor, Tipos.Txt, Linha));
                     }
                     //*** SE FOR NÚMERO
                     else if (Int64.TryParse(valor, out numeroConvertido))
