@@ -12,226 +12,201 @@ namespace Sesamo.Analysis
 {
     public class Semantic
     {
-        private string _mensagemerro;
-        public string MensagemErro
+        private string _errorMessage;
+        public string ErrorMessage
         {
-            get => _mensagemerro;
-            set => _mensagemerro = value;
+            get => _errorMessage;
+            set => _errorMessage = value;
         }
 
-        private Parser _analise;
-        public Parser AnaliseSintatica
-        {
-            get => _analise;
-        }
-        
-        Intermediate _intermediate = new Intermediate();
-        public Intermediate Codigo
-        {
-            get => _intermediate;
-        }
+        private Parser _semanticAnalysis;
+        public Parser SemanticAnalysis => _semanticAnalysis;
+
+        private readonly Intermediate _intermediate = new Intermediate();
+        public Intermediate Intermediate => _intermediate;
 
         public DataTable getCodigoIntermediario()
         {
-            DataTable retorno = new DataTable();
-            retorno.Columns.Add("Codicao");
-            retorno.Columns.Add("Expressao");
-            retorno.Columns.Add("ExpCondicaoNaoAtendida");
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("Codicao");
+            dataTable.Columns.Add("Expressao");
+            dataTable.Columns.Add("ExpCondicaoNaoAtendida");
 
-            foreach (IntermediateExpression expressao in _intermediate.Codigo)
+            foreach (IntermediateExpression code in _intermediate.Codigo)
             {
-                DataRow DR = retorno.NewRow();
+                DataRow dataRow = dataTable.NewRow();
                 StringBuilder exp = new StringBuilder();
 
-                foreach (Token tk in expressao.Condicao)
+                foreach (Token token in code.Condicao)
                 {
-                    exp.Append(tk.Texto);
+                    exp.Append(token.Texto);
                     exp.Append(" ");
                 }
-                DR["Condicao"] = exp.ToString();
+                dataRow["Condition"] = exp.ToString();
 
                 exp = new StringBuilder();
 
-                foreach (Token tk in expressao.Expressao)
+                foreach (Token token in code.Expressao)
                 {
-                    exp.Append(tk.Texto);
+                    exp.Append(token.Texto);
                     exp.Append(" ");
                 }
-                DR["Expressao"] = exp.ToString();
+                dataRow["Expression"] = exp.ToString();
 
                 exp = new StringBuilder();
 
-                foreach (Token tk in expressao.ExpressaoCondicaoNaoAtendida)
+                foreach (Token token in code.ExpressaoCondicaoNaoAtendida)
                 {
-                    exp.Append(tk.Texto);
+                    exp.Append(token.Texto);
                     exp.Append(" ");
                 }
-                DR["ExpCondicaoNaoAtendida"] = exp.ToString();
-                retorno.Rows.Add(DR);
+                dataRow["ExpressionConditionNotMet"] = exp.ToString();
+                dataTable.Rows.Add(dataRow);
             }
 
-            return retorno;
+            return dataTable;
         }
 
-        public bool Validar(Parser Analise)
+        public bool Validate(Parser semanticAnalysis)
         {
-            bool retorno = true;
-
-            _analise = Analise;
-
-            bool dentrodeIF = false;
-            bool dentrodeTHEN = false;
-            bool dentrodeELSE = false;
-            IntermediateExpression expressao = new IntermediateExpression();
-
-            for (int pos = 0; pos < Analise.LexicalAnalysis.SourceCode.Count; pos++)
+            _semanticAnalysis = semanticAnalysis;
+            bool validator = true;
+            bool insideIf = false;
+            bool insideThen = false;
+            bool insideElse = false;
+            IntermediateExpression expression = new IntermediateExpression();
+            for (int i = 0; i < semanticAnalysis.LexicalAnalysis.SourceCode.Count; i++)
             {
-                Token tk = Analise.LexicalAnalysis.SourceCode[pos];
-                Token tkAnterior = null;
-                Token tkProximo = null;
-
-                int linha = 0;
-                linha = tk.Linha;
-
-                if (pos > 0)
+                Token token = semanticAnalysis.LexicalAnalysis.SourceCode[i];
+                Token previousToken = null;
+                Token nextToken = null;
+                int line = token.Linha;
+                if (i > 0)
                 {
-                    tkAnterior = Analise.LexicalAnalysis.SourceCode[pos - 1];
+                    previousToken = semanticAnalysis.LexicalAnalysis.SourceCode[i - 1];
                 }
 
-                if (pos < Analise.LexicalAnalysis.SourceCode.Count - 1)
+                if (i < semanticAnalysis.LexicalAnalysis.SourceCode.Count - 1)
                 {
-                    tkProximo = Analise.LexicalAnalysis.SourceCode[pos + 1];
+                    nextToken = semanticAnalysis.LexicalAnalysis.SourceCode[i + 1];
                 }
 
-                // TODO: Conferir esse primeiro if
-                // Comparação original tk is OMatematico && tk is OComparacao
-                if (tk is Mathematics && tk is Comparison)
+                // TODO: Check this if
+                // Original expression: if (token is Mathematics && token is Comparison)
+                if (token is Mathematics || token is Comparison)
                 {
-                    if (tk is Bigger || tk is Less || tk is BiggerOrEqual || tk is LessOrEqual)
+                    if (token is Bigger || token is Less || token is BiggerOrEqual || token is LessOrEqual)
                     {
-                        if (((Value) tkAnterior).Tipo != Types.Dec && ((Value) tkAnterior).Tipo != Types.Hex && ((Value) tkAnterior).Tipo != Types.Bin)
+                        if ((previousToken as Value).Tipo != Types.Dec && (previousToken as Value).Tipo != Types.Hex && (previousToken as Value).Tipo != Types.Bin)
                         {
-                            string NomeValor = ((Value) tkAnterior).NomeVariavel == "" ? ((Value) tkAnterior).ValorVariavel.ToString() : ((Value) tkAnterior).NomeVariavel;
-                            this._mensagemerro = "Os tipo do valor " + NomeValor + " não é de possível comparação na linha: " + linha + ".";
-                            retorno = false;
+                            string valueName = (previousToken as Value).NomeVariavel == "" ? (previousToken as Value).ValorVariavel : (previousToken as Value).NomeVariavel;
+                            _errorMessage = $"The {valueName} value types cannot be compared on the line: {line}.";
+                            validator = false;
                             break;
                         }
                     }
                     else
                     {
-                        this._mensagemerro = "Não é possível efetuar operação aritmética com valores do tipo " + ((Value) tk).Tipo + ". Erro na linha: " + linha + ".";
-                        retorno = false;
+                        _errorMessage = $"It's not possible to perform arithmetic operation with values of type {(token as Value).Tipo}. Line error: {line}.";
+                        validator = false;
                         break;
                     }
                 }
 
-                if (tk is Comparison)
+                if (token is Comparison)
                 {
-                    if (((Value) tkAnterior).Tipo != Types.Dec || ((Value) tkAnterior).Tipo != Types.Hex || ((Value) tkAnterior).Tipo != Types.Bin)
+                    if ((previousToken as Value).Tipo != Types.Dec || (previousToken as Value).Tipo != Types.Hex || (previousToken as Value).Tipo != Types.Bin)
                     {
-                        if (((Value) tkAnterior).Tipo != ((Value) tkProximo).Tipo)
+                        if ((previousToken as Value).Tipo != (nextToken as Value).Tipo)
                         {
-                            this._mensagemerro = "Os tipos de valores devem ser iguais na comparação da linha " + linha + ".";
-                            retorno = false;
+                            _errorMessage = $"The value types must be the same when comparing on the line: {line}.";
+                            validator = false;
                             break;
                         }
                         else
                         {
-                            if (!(tk is Equal))
+                            if (!(token is Equal))
                             {
-                                this._mensagemerro = "Não é possível efetuar comparação numérica com valores do tipo " + ((Value) tkAnterior).Tipo + " e " + ((Value) tkProximo).Tipo
-                                                     + ". Erro na linha: " + linha + ".";
-                                retorno = false;
+                                _errorMessage = $"It is not possible to perform a numerical comparison with values of type {(previousToken as Value).Tipo} and {((Value) nextToken).Tipo}. Line error: {line}.";
+                                validator = false;
                                 break;
                             }
                         }
                     }
                 }
 
-                if (tkAnterior != null)
+                if (previousToken != null)
                 {
-                    if (tkAnterior.Linha != tk.Linha)
+                    if (previousToken.Linha != token.Linha)
                     {
-                        if (expressao.Expressao.Count > 0 || expressao.ExpressaoCondicaoNaoAtendida.Count > 0)
+                        if (expression.Expressao.Count > 0 || expression.ExpressaoCondicaoNaoAtendida.Count > 0)
                         {
-                            _intermediate.AdicionarExpressao(expressao);
+                            _intermediate.AdicionarExpressao(expression);
 
-                            IntermediateExpression expressaoTemp = new IntermediateExpression();
-                            if ((dentrodeTHEN || dentrodeELSE) && !(tk is EndIf))
+                            IntermediateExpression expressionTemp = new IntermediateExpression();
+                            if ((insideThen || insideElse) && !(token is EndIf))
                             {
-                                expressaoTemp.Condicao = expressao.getCopiaCondicao();
+                                expressionTemp.Condicao = expression.getCopiaCondicao();
                             }
 
-                            expressao = expressaoTemp;
+                            expression = expressionTemp;
                         }
 
-                        if (tk is EndIf && expressao.Condicao.Count > 0)
+                        if (token is EndIf && expression.Condicao.Count > 0)
                         {
-                            expressao.Condicao = new List<Token>();
+                            expression.Condicao = new List<Token>();
                         }
                     }
                 }
 
-                if (tk is If)
+                switch (token)
                 {
-                    dentrodeIF = true;
-                    dentrodeTHEN = false;
-                    dentrodeELSE = false;
-
-                    continue;
+                    case If _:
+                        insideIf = true;
+                        insideThen = false;
+                        insideElse = false;
+                        continue;
+                    case Then _:
+                        insideIf = false;
+                        insideThen = true;
+                        insideElse = false;
+                        continue;
+                    case Else _:
+                        insideIf = false;
+                        insideThen = false;
+                        insideElse = true;
+                        continue;
+                    case EndIf _:
+                        insideIf = false;
+                        insideThen = false;
+                        insideElse = false;
+                        continue;
                 }
 
-                if (tk is Then)
+                if (insideIf)
                 {
-                    dentrodeIF = false;
-                    dentrodeTHEN = true;
-                    dentrodeELSE = false;
-
-                    continue;
+                    expression.AdicionarTokenEmCondicao(token);
                 }
-
-                if (tk is Else)
+                else if (insideThen)
                 {
-                    dentrodeIF = false;
-                    dentrodeTHEN = false;
-                    dentrodeELSE = true;
-
-                    continue;
+                    expression.AdicionarTokenEmExpressao(token);
                 }
-
-                if (tk is EndIf)
+                else if (insideElse)
                 {
-                    dentrodeIF = false;
-                    dentrodeTHEN = false;
-                    dentrodeELSE = false;
-
-                    continue;
-                }
-
-                if (dentrodeIF)
-                {
-                    expressao.AdicionarTokenEmCondicao(tk);
-                }
-                else if (dentrodeTHEN)
-                {
-                    expressao.AdicionarTokenEmExpressao(tk);
-                }
-                else if (dentrodeELSE)
-                {
-                    expressao.AdicionarTokenEmExpressaoCondicaoNaoAtendida(tk);
+                    expression.AdicionarTokenEmExpressaoCondicaoNaoAtendida(token);
                 }
                 else
                 {
-                    expressao.AdicionarTokenEmExpressao(tk);
+                    expression.AdicionarTokenEmExpressao(token);
                 }
             }
 
-            if (expressao.Expressao.Count > 0 || expressao.ExpressaoCondicaoNaoAtendida.Count > 0)
+            if (expression.Expressao.Count > 0 || expression.ExpressaoCondicaoNaoAtendida.Count > 0)
             {
-                _intermediate.AdicionarExpressao(expressao);
+                _intermediate.AdicionarExpressao(expression);
             }
 
-            return retorno;
+            return validator;
         }
     }
 }

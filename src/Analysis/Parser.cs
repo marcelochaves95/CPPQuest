@@ -171,25 +171,16 @@ namespace Sesamo.Analysis
 
         public bool Validate(Lexical lexicalAnalysis)
         {
-            bool validator = true;
-
             _lexicalAnalysis = lexicalAnalysis;
-
-            string read = "";
-            int line = 0;
-
+            bool validator = true;
             bool insideIf = false;
             bool insideThen = false;
             bool insideElse = false;
-            bool structureChangeOccurredIf = false;
-            bool operatorOccurredMathematical = false;
-            bool operatorOccurredComparison = false;
-            bool operatorOccurredLogical = false;
-
             string contentIf = "";
             string contentThenPerLine = "";
             string contentElsePerLine = "";
-
+            string read = "";
+            int line = 0;
             for (int i = 0; i < lexicalAnalysis.SourceCode.Count; i++)
             {
                 Token token = lexicalAnalysis.SourceCode[i];
@@ -246,41 +237,28 @@ namespace Sesamo.Analysis
                     }
                 }
 
-                structureChangeOccurredIf = false;
-                if (token is If)
+                switch (token)
                 {
-                    insideIf = true;
-                    insideThen = false;
-                    insideElse = false;
-
-                    structureChangeOccurredIf = true;
-                }
-
-                if (token is Then)
-                {
-                    insideIf = false;
-                    insideThen = true;
-                    insideElse = false;
-
-                    structureChangeOccurredIf = true;
-                }
-
-                if (token is Else)
-                {
-                    insideIf = false;
-                    insideThen = false;
-                    insideElse = true;
-
-                    structureChangeOccurredIf = true;
-                }
-
-                if (token is EndIf)
-                {
-                    insideIf = false;
-                    insideThen = false;
-                    insideElse = false;
-
-                    structureChangeOccurredIf = true;
+                    case If _:
+                        insideIf = true;
+                        insideThen = false;
+                        insideElse = false;
+                        break;
+                    case Then _:
+                        insideIf = false;
+                        insideThen = true;
+                        insideElse = false;
+                        break;
+                    case Else _:
+                        insideIf = false;
+                        insideThen = false;
+                        insideElse = true;
+                        break;
+                    case EndIf _:
+                        insideIf = false;
+                        insideThen = false;
+                        insideElse = false;
+                        break;
                 }
 
                 Token previousToken = null;
