@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace Linguagem
 {
-    public class Variaveis
+    public class Variavel
     {
-        public Variaveis(List<Valor> Variaveis)
+        public Variavel(List<Valor> Variaveis)
         {
             //CARREGA A LISTA DE VARIAVEIS
             this._listaVariaveis = Variaveis;

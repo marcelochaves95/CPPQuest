@@ -13,7 +13,7 @@ namespace Linguagem
             set => _mensagemerro = value;
         }
 
-        public void Executar(CodigoIntermediario Codigo, Variaveis ListaVariaveis)
+        public void Executar(CodigoIntermediario Codigo, Variavel listaVariavel)
         {
             foreach (ExpressaoCodigoIntermediario expressao in Codigo.Codigo)
             {

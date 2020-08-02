@@ -13,8 +13,8 @@ namespace Linguagem
             set { _mensagemerro = value; }
         }
 
-        private Variaveis var = null;
-        public Variaveis Variaveis
+        private Variavel var = null;
+        public Variavel Variavel
         {
             get { return var; }
         }
@@ -115,7 +115,7 @@ namespace Linguagem
                         continue;
                     }
 
-                    var = new Variaveis(ListaVariaveis);
+                    var = new Variavel(ListaVariaveis);
                     Int64 numeroConvertido = 0;
                     
                     //*** SE FOR UMA STRING
