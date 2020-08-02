@@ -1,4 +1,4 @@
-namespace Linguagem
+namespace Sesamo.Operators.Mathematical
 {
     public class OSubtracao : OMatematico, IOperador
     {

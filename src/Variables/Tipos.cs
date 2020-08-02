@@ -1,4 +1,4 @@
-namespace Linguagem
+namespace Sesamo.Variables
 {
     public struct Tipos
     {

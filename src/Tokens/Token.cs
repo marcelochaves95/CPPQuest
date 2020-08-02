@@ -1,4 +1,7 @@
-namespace Linguagem
+using Sesamo.Operators;
+using Sesamo.Variables;
+
+namespace Sesamo.Tokens
 {
     public abstract class Token
     {

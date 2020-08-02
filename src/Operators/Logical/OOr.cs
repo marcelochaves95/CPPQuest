@@ -1,4 +1,4 @@
-namespace Linguagem
+namespace Sesamo.Operators.Logical
 {
     public class OOr : OLogico, IOperador
     {

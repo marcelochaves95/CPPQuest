@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Linguagem
+namespace Sesamo.Intermediaries
 {
     public class CodigoIntermediario
     {

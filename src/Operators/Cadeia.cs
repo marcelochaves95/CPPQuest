@@ -1,4 +1,4 @@
-namespace Linguagem
+namespace Sesamo.Operators
 {
     public class Cadeia
     {

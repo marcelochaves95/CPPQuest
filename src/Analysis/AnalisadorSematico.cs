@@ -1,8 +1,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Sesamo.Intermediaries;
+using Sesamo.Operators.Comparisons;
+using Sesamo.Operators.Conditional;
+using Sesamo.Operators.Mathematical;
+using Sesamo.Tokens;
+using Sesamo.Variables;
 
-namespace Linguagem
+namespace Sesamo.Analysis
 {
     public class AnalisadorSematico
     {
@@ -99,7 +105,7 @@ namespace Linguagem
 
                 // TODO: Conferir esse primeiro if
                 // Comparação original tk is OMatematico && tk is OComparacao
-                if (tkAnterior is OMatematico && tkProximo is OComparacao)
+                if (tk is OMatematico && tk is OComparacao)
                 {
                     if (tk is OMaior || tk is OMenor || tk is OMaiorIgual || tk is OMenorIgual)
                     {

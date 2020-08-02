@@ -1,4 +1,4 @@
-namespace Linguagem
+namespace Sesamo.Operators.Conditional
 {
     public class OEntao : Operador, IOperador
     {

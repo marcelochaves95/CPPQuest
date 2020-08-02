@@ -1,7 +1,14 @@
 using System.Text;
 using System.Text.RegularExpressions;
+using Sesamo.Operators;
+using Sesamo.Operators.Comparisons;
+using Sesamo.Operators.Conditional;
+using Sesamo.Operators.Logical;
+using Sesamo.Operators.Mathematical;
+using Sesamo.Tokens;
+using Sesamo.Variables;
 
-namespace Linguagem
+namespace Sesamo.Analysis
 {
     public class AnalisadorSintatico
     {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Sesamo.Tokens;
 
-namespace Linguagem
+namespace Sesamo.Intermediaries
 {
     //*** Se a expressao é simples será a da propriedade Expressao
     //*** Se a expressao é sob uma condição, para a propriedade Expressao 

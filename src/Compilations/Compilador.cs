@@ -1,8 +1,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
+using Sesamo.Intermediaries;
+using Sesamo.Operators.Comparisons;
+using Sesamo.Operators.Logical;
+using Sesamo.Operators.Mathematical;
+using Sesamo.Tokens;
+using Sesamo.Variables;
 
-namespace Linguagem
+namespace Sesamo.Compilations
 {
     public class Compilador
     {

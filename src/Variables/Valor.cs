@@ -1,4 +1,6 @@
-namespace Linguagem
+using Sesamo.Tokens;
+
+namespace Sesamo.Variables
 {
     public class Valor : Token
     {

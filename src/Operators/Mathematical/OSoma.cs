@@ -1,4 +1,4 @@
-namespace Linguagem
+namespace Sesamo.Operators.Mathematical
 {
     public class OSoma : OMatematico, IOperador
     {

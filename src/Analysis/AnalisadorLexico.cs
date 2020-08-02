@@ -1,7 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Sesamo.Operators.Comparisons;
+using Sesamo.Operators.Conditional;
+using Sesamo.Operators.Logical;
+using Sesamo.Operators.Mathematical;
+using Sesamo.Tokens;
+using Sesamo.Variables;
 
-namespace Linguagem
+namespace Sesamo.Analysis
 {
     public class AnalisadorLexico
     {

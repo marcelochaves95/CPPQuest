@@ -1,4 +1,4 @@
-namespace Linguagem
+namespace Sesamo.Operators.Comparisons
 {
     public class OMaiorIgual : OComparacao, IOperador
     {
