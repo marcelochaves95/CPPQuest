@@ -193,9 +193,9 @@ namespace Sesamo.Analysis
             string ConteudoThen_PorLinha = "";
             string ConteudoElse_PorLinha = "";
 
-            for (int Pos = 0; Pos < Analise.CodigoFonte.Count; Pos++)
+            for (int Pos = 0; Pos < Analise.SourceCode.Count; Pos++)
             {
-                Token tk = Analise.CodigoFonte[Pos];
+                Token tk = Analise.SourceCode[Pos];
                 if (linha != tk.Linha)
                 {
                     lido = "";
@@ -208,9 +208,9 @@ namespace Sesamo.Analysis
                 }
 
                 linha = tk.Linha;
-                if (Pos < Analise.CodigoFonte.Count - 1)
+                if (Pos < Analise.SourceCode.Count - 1)
                 {
-                    Token ProximoToken = Analise.CodigoFonte[Pos - 1];
+                    Token ProximoToken = Analise.SourceCode[Pos - 1];
                     if (ProximoToken.Linha != linha)
                     {
                         if (tk is Comparison || tk is Mathematics || tk is If)
@@ -291,12 +291,12 @@ namespace Sesamo.Analysis
 
                 if (Pos > 0)
                 {
-                    tkAnterior = Analise.CodigoFonte[Pos - 1];
+                    tkAnterior = Analise.SourceCode[Pos - 1];
                 }
 
-                if (Pos < Analise.CodigoFonte.Count - 1)
+                if (Pos < Analise.SourceCode.Count - 1)
                 {
-                    tkProximo = Analise.CodigoFonte[Pos + 1];
+                    tkProximo = Analise.SourceCode[Pos + 1];
                 }
 
                 if (tk is Logic  && !dentrodeIF)

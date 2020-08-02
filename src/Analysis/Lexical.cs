@@ -11,80 +11,72 @@ namespace Sesamo.Analysis
 {
     public class Lexical
     {
-        private string Espaco = "º";
-        private string _mensagemerro;
-        public string MensagemErro
+        private string _space = "º";
+        private string _errorMessage;
+        public string ErrorMessage
         {
-            get { return _mensagemerro; }
-            set { _mensagemerro = value; }
+            get => _errorMessage;
+            set => _errorMessage = value;
         }
 
-        private Variable var = null;
-        public Variable Variable
-        {
-            get { return var; }
-        }
+        private Variable variable = null;
+        public Variable Variable => variable;
 
-        private List<Token> _codigofonte;
-        public List<Token> CodigoFonte
+        private List<Token> _sourceCode;
+        public List<Token> SourceCode
         {
             get
             {
-                if (_codigofonte == null)
+                if (_sourceCode == null)
                 {
-                    _codigofonte = new List<Token>();
+                    _sourceCode = new List<Token>();
                 }
-                return _codigofonte;
+
+                return _sourceCode;
             }
         }
 
-        public bool Validar(string Codigo, List<Value> ListaVariaveis)
+        public bool Validate(string code, List<Value> variables)
         {
-            //*** SUBSTITUI + de 1 ESPAÇOS POR 1 ESPAÇO SOMENTE FORA DE STRINGS IDENTIFICADO POR COMEÇAR COM (") E TERMINAR COM (")
-            //*** SUBSTITUI ESPAÇO PELA VARIAVEL Espaco PARA NÃO DAR PROBLEMA DE IDENTIFICAÇÃO DE TOKENS STRINGS COM SPAÇO QUANDO FIZER SPLIT
-            string codigoRemontado = "";
-            bool dentroDeString = false;
-            for (int pos1 = 0; pos1 < Codigo.Length; pos1++)
+            string reassembledCode = "";
+            bool insideString = false;
+            for (int pos1 = 0; pos1 < code.Length; pos1++)
             {
-                char letra = Codigo[pos1];
-                char letraAnterior = new char();
-                char proximaLetra = new char();
+                char letter = code[pos1];
+                char previousLetter = new char();
+                char nextLetter = new char();
 
                 if (pos1 > 0)
                 {
-                    letraAnterior = Codigo[pos1 - 1];
+                    previousLetter = code[pos1 - 1];
                 }
 
-                if (pos1 < Codigo.Length - 1)
+                if (pos1 < code.Length - 1)
                 {
-                    proximaLetra = Codigo[pos1 + 1];
+                    nextLetter = code[pos1 + 1];
                 }
 
-                if (letra == '"')
+                if (letter == '"')
                 {
-                    if (!dentroDeString)
+                    if (!insideString)
                     {
-                        dentroDeString = true;
-                    }
-                    else
-                    {
-                        dentroDeString = false;
+                        insideString = true;
                     }
                 }
 
-                if (letra == '\n' && dentroDeString)
+                if (letter == '\n' && insideString)
                 {
                     break;
                 }
-                else if (dentroDeString)
+                else if (insideString)
                 {
-                    codigoRemontado += letra.ToString();
+                    reassembledCode += letter.ToString();
                 }
-                else if (letra == ' ')
+                else if (letter == ' ')
                 {
-                    if (letraAnterior != ' ' && letraAnterior != '\n' && proximaLetra != '\n')
+                    if (previousLetter != ' ' && previousLetter != '\n' && nextLetter != '\n')
                     {
-                        codigoRemontado += Espaco;
+                        reassembledCode += _space;
                     }
                     else
                     {
@@ -92,153 +84,119 @@ namespace Sesamo.Analysis
                     }
                 }
 
-                if (dentroDeString)
+                if (insideString)
                 {
-                    this._mensagemerro = "Sequencia String de valores não fechada.";
+                    _errorMessage = "String of values not closed.";
                     return false;
                 }
 
-                Codigo = codigoRemontado;
-                
-                //*** SEPARA ENTER DOS OUTROS CARACTERES COM ESPAÇO
-                Codigo = Codigo.Replace("\n", Espaco + "\n" + Espaco);
-
-                string[] Tokens = Codigo.Split(Convert.ToChar(Espaco));
-                int Linha = 1;
-
-                for (int pos2 = 0; pos2 < Tokens.Length; pos2++)
+                code = reassembledCode;
+                code = code.Replace("\n", _space + "\n" + _space);
+                string[] tokens = code.Split(Convert.ToChar(_space));
+                int line = 1;
+                foreach (string token in tokens)
                 {
-                    string valor = Tokens[pos2] != "\n" ? Tokens[pos2].Trim() : Tokens[pos2];
-                    
-                    //*** IDENTIFICA AS LINHAS POR ENTER
-                    if (valor == "\n")
+                    string value = token != "\n" ? token.Trim() : token;
+                    if (value == "\n")
                     {
-                        Linha++;
+                        line++;
                         continue;
                     }
-                    else if (valor == "")
-                    {
-                        continue;
-                    }
-
-                    var = new Variable(ListaVariaveis);
-                    Int64 numeroConvertido = 0;
-                    
-                    //*** SE FOR UMA STRING
-                    if (valor[0] == '"')
-                    {
-                        CodigoFonte.Add(new Value(valor, Types.Txt, Linha));
-                    }
-                    //*** SE FOR NÚMERO
-                    else if (Int64.TryParse(valor, out numeroConvertido))
-                    {
-                        CodigoFonte.Add(new Value(numeroConvertido.ToString(), Types.Dec, Linha));
-                    }
-                    //*** SE É UM NOME DE VARIÁVEL
-                    else if (var.ExisteVariavel(valor))
-                    {
-                        Value variavel = var.getVariavel(valor).Copia();
-                        variavel.Linha = Linha;
-                        CodigoFonte.Add(variavel);
-                    }
-                    
-                    //*** SE É UM IF
-                    else if (new If().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new If(Linha));
-                    }
-                    //*** SE É UM THEN
-                    else if (new Then().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Then(Linha));
-                    }
-                    //*** SE É UM ELSE
-                    else if (new Else().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Else(Linha));
-                    }
-                    //*** SE É UM ENDIF
-                    else if (new EndIf().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new EndIf(Linha));
-                    }
-                    
-                    //*** SE É UM IGUAL
-                    else if (new Equal().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Equal(Linha));
-                    }
-                    //*** SE É UM DIFERENTE
-                    else if (new Different().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Different(Linha));
-                    }
-                    //*** SE É UM MAIOR
-                    else if (new Bigger().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Bigger(Linha));
-                    }
-                    //*** SE É UM MENOR
-                    else if (new Less().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Less(Linha));
-                    }
-                    //*** SE É UM MAIOR OU IGUAL >=
-                    else if (new BiggerOrEqual().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new BiggerOrEqual(Linha));
-                    }
-                    //*** SE É UM MENOR OU IGUAL <=
-                    else if (new LessOrEqual().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new LessOrEqual(Linha));
-                    }
-
-                    //*** SE É UM SOMA
-                    else if (new Addition().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Addition(Linha));
-                    }
-                    //*** SE É UM SUBTRAÇÃO
-                    else if (new Subtraction().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Subtraction(Linha));
-                    }
-                    //*** SE É UM MULTIPLICAÇÃO
-                    else if (new Multiplication().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Multiplication(Linha));
-                    }
-                    //*** SE É UM DIVISÃO
-                    else if (new Division().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Division(Linha));
-                    }
-
-                    //*** SE É UM OR
-                    else if (new Or().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new Or(Linha));
-                    }
-                    //*** SE É UM AND
-                    else if (new And().Chain.Valor == valor)
-                    {
-                        CodigoFonte.Add(new And(Linha));
-                    }
-                    //*** SE É VAZIO PULA
-                    else if (valor == "")
+                    else if (value == "")
                     {
                         continue;
                     }
 
-                    //*** SE NÃO ENTROU EM NENHUM DOS CASOS ANTERIORES, O SÍMBOLO NÃO É RECONHECIDO
+                    variable = new Variable(variables);
+                    if (value[0] == '"')
+                    {
+                        SourceCode.Add(new Value(value, Types.Txt, line));
+                    }
+                    else if (Int64.TryParse(value, out long convertedNumber))
+                    {
+                        SourceCode.Add(new Value(convertedNumber.ToString(), Types.Dec, line));
+                    }
+                    else if (variable.ExisteVariavel(value))
+                    {
+                        Value valueVariable = variable.getVariavel(value).Copia();
+                        valueVariable.Linha = line;
+                        SourceCode.Add(valueVariable);
+                    }
+                    else if (new If().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new If(line));
+                    }
+                    else if (new Then().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Then(line));
+                    }
+                    else if (new Else().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Else(line));
+                    }
+                    else if (new EndIf().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new EndIf(line));
+                    }
+                    else if (new Equal().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Equal(line));
+                    }
+                    else if (new Different().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Different(line));
+                    }
+                    else if (new Bigger().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Bigger(line));
+                    }
+                    else if (new Less().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Less(line));
+                    }
+                    else if (new BiggerOrEqual().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new BiggerOrEqual(line));
+                    }
+                    else if (new LessOrEqual().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new LessOrEqual(line));
+                    }
+                    else if (new Addition().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Addition(line));
+                    }
+                    else if (new Subtraction().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Subtraction(line));
+                    }
+                    else if (new Multiplication().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Multiplication(line));
+                    }
+                    else if (new Division().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Division(line));
+                    }
+                    else if (new Or().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new Or(line));
+                    }
+                    else if (new And().Chain.Valor == value)
+                    {
+                        SourceCode.Add(new And(line));
+                    }
+                    else if (value == "")
+                    {
+                        continue;
+                    }
                     else
                     {
-                        this._mensagemerro = "Símbolo " + valor + " não reconhecido na linha " + Linha + ".";
+                        _errorMessage = $"{value} symbol not recognized on line {line}.";
                     }
                 }
             }
-            
+
             return true;
         }
     }

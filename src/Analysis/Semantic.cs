@@ -84,9 +84,9 @@ namespace Sesamo.Analysis
             bool dentrodeELSE = false;
             IntermediateExpression expressao = new IntermediateExpression();
 
-            for (int pos = 0; pos < Analise.AnalisadorLexica.CodigoFonte.Count; pos++)
+            for (int pos = 0; pos < Analise.AnalisadorLexica.SourceCode.Count; pos++)
             {
-                Token tk = Analise.AnalisadorLexica.CodigoFonte[pos];
+                Token tk = Analise.AnalisadorLexica.SourceCode[pos];
                 Token tkAnterior = null;
                 Token tkProximo = null;
 
@@ -95,12 +95,12 @@ namespace Sesamo.Analysis
 
                 if (pos > 0)
                 {
-                    tkAnterior = Analise.AnalisadorLexica.CodigoFonte[pos - 1];
+                    tkAnterior = Analise.AnalisadorLexica.SourceCode[pos - 1];
                 }
 
-                if (pos < Analise.AnalisadorLexica.CodigoFonte.Count - 1)
+                if (pos < Analise.AnalisadorLexica.SourceCode.Count - 1)
                 {
-                    tkProximo = Analise.AnalisadorLexica.CodigoFonte[pos + 1];
+                    tkProximo = Analise.AnalisadorLexica.SourceCode[pos + 1];
                 }
 
                 // TODO: Conferir esse primeiro if
