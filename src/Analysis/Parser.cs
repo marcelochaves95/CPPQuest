@@ -12,488 +12,484 @@ namespace Sesamo.Analysis
 {
     public class Parser
     {
-        private string _mensagemerro;
-        public string MensagemErro
+        private string _errorMessage;
+        public string ErrorMessage
         {
-            get { return _mensagemerro; }
-            set { _mensagemerro = value; }
+            get => _errorMessage;
+            set => _errorMessage = value;
         }
 
-        private Lexical _analise;
-        public Lexical AnalisadorLexica
-        {
-            get { return _analise; }
-        }
+        private Lexical _lexicalAnalysis;
+        public Lexical LexicalAnalysis => _lexicalAnalysis;
 
-        private string ExpressaoRegularCadeia()
+        private string GetChainRegularExpression()
         {
             return @"(\" + '"'.ToString() + @"(\w|\.|\:|\,|\-|\+|\*|\/|\&|\(|\)|\%|\$|\#|\@|\!|\?|\<|\>|\;|\ )*\" + '"'.ToString() + @")|\w+";
         }
 
-        private string ExpressaoRegularPermitePontoEmVariavel()
+        private string GetAllowsVariablePointRegularExpression()
         {
             return @"(\.\w+)*";
         }
 
-        private string ExpressaoRegularOperadoresComparacao()
+        private string GetOperatorsComparisonRegularExpression()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
-            sb.Append(@"(\");
-            sb.Append(new Equal().Chain.Valor);
+            stringBuilder.Append(@"(\");
+            stringBuilder.Append(new Equal().Chain.Valor);
 
-            sb.Append(@"|");
+            stringBuilder.Append(@"|");
 
-            sb.Append(@"\");
-            sb.Append(new Different().Chain.Valor);
+            stringBuilder.Append(@"\");
+            stringBuilder.Append(new Different().Chain.Valor);
 
-            sb.Append(@"|");
+            stringBuilder.Append(@"|");
 
-            sb.Append(@"\");
-            sb.Append(new Bigger().Chain.Valor);
+            stringBuilder.Append(@"\");
+            stringBuilder.Append(new Bigger().Chain.Valor);
 
-            sb.Append(@"|");
+            stringBuilder.Append(@"|");
 
-            sb.Append(@"\");
-            sb.Append(new Less().Chain.Valor);
+            stringBuilder.Append(@"\");
+            stringBuilder.Append(new Less().Chain.Valor);
 
-            sb.Append(@"|");
+            stringBuilder.Append(@"|");
 
-            sb.Append(@"\");
-            sb.Append(new BiggerOrEqual().Chain.Valor);
+            stringBuilder.Append(@"\");
+            stringBuilder.Append(new BiggerOrEqual().Chain.Valor);
 
-            sb.Append(@"|");
+            stringBuilder.Append(@"|");
 
-            sb.Append(@"\");
-            sb.Append(new LessOrEqual().Chain.Valor);
+            stringBuilder.Append(@"\");
+            stringBuilder.Append(new LessOrEqual().Chain.Valor);
 
-            sb.Append(@")");
+            stringBuilder.Append(@")");
 
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
 
-        private string ExpressaoRegularOperadoresLogicos()
+        private string GetOperatorsLogicalRegularExpression()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
-            sb.Append(@"(");
+            stringBuilder.Append(@"(");
 
-            sb.Append(new And().Chain.Valor);
+            stringBuilder.Append(new And().Chain.Valor);
 
-            sb.Append(@"|");
+            stringBuilder.Append(@"|");
 
-            sb.Append(new Or().Chain.Valor);
+            stringBuilder.Append(new Or().Chain.Valor);
 
-            sb.Append(@")");
+            stringBuilder.Append(@")");
 
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
         
-        private string ExpressaoRegularOperadoresMatematicos(bool ComEspacoFinal)
+        private string GetOperatorsMathematicalRegularExpression(bool withEndSpace)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
-            if (ComEspacoFinal)
+            if (withEndSpace)
             {
-                sb.Append(@"((");
+                stringBuilder.Append(@"((");
             }
             else
             {
-                sb.Append(@"(\s(");
+                stringBuilder.Append(@"(\s(");
             }
 
-            sb.Append(@"\");
-            sb.Append(new Addition().Chain.Valor);
+            stringBuilder.Append(@"\");
+            stringBuilder.Append(new Addition().Chain.Valor);
 
-            sb.Append(@"|");
+            stringBuilder.Append(@"|");
 
-            sb.Append(@"\");
-            sb.Append(new Subtraction().Chain.Valor);
+            stringBuilder.Append(@"\");
+            stringBuilder.Append(new Subtraction().Chain.Valor);
 
-            sb.Append(@"|");
+            stringBuilder.Append(@"|");
 
-            sb.Append(@"\");
-            sb.Append(new Multiplication().Chain.Valor);
+            stringBuilder.Append(@"\");
+            stringBuilder.Append(new Multiplication().Chain.Valor);
 
-            sb.Append(@"|");
+            stringBuilder.Append(@"|");
 
-            sb.Append(@"\");
-            sb.Append(new Less().Chain.Valor);
+            stringBuilder.Append(@"\");
+            stringBuilder.Append(new Less().Chain.Valor);
 
-            if (ComEspacoFinal)
+            if (withEndSpace)
             {
-                sb.Append(@")\s\w+" + ExpressaoRegularPermitePontoEmVariavel() + @"\s)*");
+                stringBuilder.Append(@")\s\w+" + GetAllowsVariablePointRegularExpression() + @"\s)*");
             }
             else
             {
-                sb.Append(@")\s\w+" + ExpressaoRegularPermitePontoEmVariavel() + @"\)*");
+                stringBuilder.Append(@")\s\w+" + GetAllowsVariablePointRegularExpression() + @"\)*");
             }
 
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
 
-        private string ExpressaoRegularExpressoes()
+        private string GetExpressionsRegularExpression()
         {
             StringBuilder sb = new StringBuilder();
-            string OperadoresMatematicos = ExpressaoRegularOperadoresMatematicos(true);
-            string OperadoresMatematicosFinais = ExpressaoRegularOperadoresMatematicos(false);
-            string OperadoresComparacao = ExpressaoRegularOperadoresComparacao();
+            string mathematical = GetOperatorsMathematicalRegularExpression(true);
+            string mathematicalWithEndSpace = GetOperatorsMathematicalRegularExpression(false);
+            string comparison = GetOperatorsComparisonRegularExpression();
 
-            sb.Append(@"^" + ExpressaoRegularCadeia() + ExpressaoRegularPermitePontoEmVariavel() + @"\s");
-            sb.Append(OperadoresMatematicos);
-            sb.Append(OperadoresComparacao);
-            sb.Append(@"+\s" + ExpressaoRegularCadeia() + ExpressaoRegularPermitePontoEmVariavel() + @"");
-            sb.Append(OperadoresMatematicosFinais);
+            sb.Append(@"^" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
+            sb.Append(mathematical);
+            sb.Append(comparison);
+            sb.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"");
+            sb.Append(mathematicalWithEndSpace);
             sb.Append(@"$");
 
             return sb.ToString();
         }
 
-        private string ExpressaoRegularSeEntao()
+        private string GetIfThenRegularExpression()
         {
             StringBuilder sb = new StringBuilder();
-            string OperadoresComparacao = ExpressaoRegularOperadoresComparacao();
-            string OperadoresLogicos = ExpressaoRegularOperadoresLogicos();
-            string OperadoresMatematicos = ExpressaoRegularOperadoresMatematicos(true);
+            string comparison = GetOperatorsComparisonRegularExpression();
+            string logical = GetOperatorsLogicalRegularExpression();
+            string mathematical = GetOperatorsMathematicalRegularExpression(true);
 
-            sb.Append(@"if\s" + ExpressaoRegularCadeia() + ExpressaoRegularPermitePontoEmVariavel() + @"\s");
-            sb.Append(OperadoresMatematicos);
-            sb.Append(OperadoresComparacao);
-            sb.Append(@"+\s" + ExpressaoRegularCadeia() + ExpressaoRegularPermitePontoEmVariavel() + @"\s(");
-            sb.Append(OperadoresMatematicos);
-            sb.Append(OperadoresLogicos);
-            sb.Append(@"+\s" + ExpressaoRegularCadeia() + ExpressaoRegularPermitePontoEmVariavel() + @"\s");
-            sb.Append(OperadoresMatematicos);
-            sb.Append(OperadoresComparacao);
-            sb.Append(@"+\s" + ExpressaoRegularCadeia() + ExpressaoRegularPermitePontoEmVariavel() + @"\s");
-            sb.Append(OperadoresMatematicos);
+            sb.Append(@"if\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
+            sb.Append(mathematical);
+            sb.Append(comparison);
+            sb.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s(");
+            sb.Append(mathematical);
+            sb.Append(logical);
+            sb.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
+            sb.Append(mathematical);
+            sb.Append(comparison);
+            sb.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
+            sb.Append(mathematical);
             sb.Append(@")*then");
 
             return sb.ToString();
         }
 
-        public bool Validar(Lexical Analise)
+        public bool Validate(Lexical lexicalAnalysis)
         {
-            bool retorno = true;
+            bool validator = true;
 
-            _analise = Analise;
+            _lexicalAnalysis = lexicalAnalysis;
 
-            string lido = "";
-            int linha = 0;
+            string read = "";
+            int line = 0;
 
-            bool dentrodeIF = false;
-            bool dentrodeTHEN = false;
-            bool dentrodeELSE = false;
-            bool ocorreuMudancaEstruturaIf = false;
-            bool ocorreuOperadorMatematico = false;
-            bool ocorreuOperadorComparacao = false;
-            bool ocorreuOperadorLogico = false;
+            bool insideIf = false;
+            bool insideThen = false;
+            bool insideElse = false;
+            bool structureChangeOccurredIf = false;
+            bool operatorOccurredMathematical = false;
+            bool operatorOccurredComparison = false;
+            bool operatorOccurredLogical = false;
 
-            string ConteudoIf = "";
-            string ConteudoThen_PorLinha = "";
-            string ConteudoElse_PorLinha = "";
+            string contentIf = "";
+            string contentThenPerLine = "";
+            string contentElsePerLine = "";
 
-            for (int Pos = 0; Pos < Analise.SourceCode.Count; Pos++)
+            for (int i = 0; i < lexicalAnalysis.SourceCode.Count; i++)
             {
-                Token tk = Analise.SourceCode[Pos];
-                if (linha != tk.Linha)
+                Token token = lexicalAnalysis.SourceCode[i];
+                if (line != token.Linha)
                 {
-                    lido = "";
-                    if (tk is Operator && !(tk is If) && !(tk is Else) && !(tk is EndIf))
+                    read = "";
+                    if (token is Operator && !(token is If) && !(token is Else) && !(token is EndIf))
                     {
-                        this._mensagemerro = "Erro de sintaxe: Uso incorreto do operador no início da expressão. Linha " + tk.Linha + ".";
-                        retorno = false;
+                        _errorMessage = $"Syntax error: Incorrect use of the operator at the beginning of the expression. Line: {token.Linha}.";
+                        validator = false;
                         break;
                     }
                 }
 
-                linha = tk.Linha;
-                if (Pos < Analise.SourceCode.Count - 1)
+                line = token.Linha;
+                if (i < lexicalAnalysis.SourceCode.Count - 1)
                 {
-                    Token ProximoToken = Analise.SourceCode[Pos - 1];
-                    if (ProximoToken.Linha != linha)
+                    Token nextToken = lexicalAnalysis.SourceCode[i - 1];
+                    if (nextToken.Linha != line)
                     {
-                        if (tk is Comparison || tk is Mathematics || tk is If)
+                        if (token is Comparison || token is Mathematics || token is If)
                         {
-                            this._mensagemerro = "Erro de sintaxe: Uso incorreto do operador no final da expressão. Linha " + tk.Linha + ".";
-                            retorno = false;
+                            _errorMessage = $"Syntax error: Incorrect use of the operator at the end of the expression. Line: {token.Linha}.";
+                            validator = false;
                             break;
                         }
                     }
                 }
 
-                if (tk is Value)
+                if (token is Value value)
                 {
-                    if (lido == "" || lido == "O")
+                    if (read == "" || read == "O")
                     {
-                        lido = "V";
+                        read = "V";
                     }
                     else
                     {
-                        this._mensagemerro = "Erro de sintaxe: Símbolo " + ((Value) tk).NomeVariavel + " utilizado de forma incorreta na linha " + linha + ".";
-                        retorno = false;
+                        _errorMessage = $"Syntax error: {value.NomeVariavel} symbol used incorrectly on the line: {line}.";
+                        validator = false;
                         break;
                     }
                 }
-                else if (tk is Operator)
+                else if (token is Operator)
                 {
-                    if (lido == "" || lido == "V")
+                    if (read == "" || read == "V")
                     {
-                        lido = "O";
+                        read = "O";
                     }
                     else
                     {
-                        this._mensagemerro = "Erro de sintaxe: Operador utilizado de forma incorreta na linha " + linha + ".";
-                        retorno = false;
+                        _errorMessage = $"Syntax error: Operator used incorrectly on the line: {line}.";
+                        validator = false;
                         break;
                     }
                 }
 
-                ocorreuMudancaEstruturaIf = false;
-                if (tk is If)
+                structureChangeOccurredIf = false;
+                if (token is If)
                 {
-                    dentrodeIF = true;
-                    dentrodeTHEN = false;
-                    dentrodeELSE = false;
+                    insideIf = true;
+                    insideThen = false;
+                    insideElse = false;
 
-                    ocorreuMudancaEstruturaIf = true;
+                    structureChangeOccurredIf = true;
                 }
 
-                if (tk is Then)
+                if (token is Then)
                 {
-                    dentrodeIF = false;
-                    dentrodeTHEN = true;
-                    dentrodeELSE = false;
+                    insideIf = false;
+                    insideThen = true;
+                    insideElse = false;
 
-                    ocorreuMudancaEstruturaIf = true;
+                    structureChangeOccurredIf = true;
                 }
 
-                if (tk is Else)
+                if (token is Else)
                 {
-                    dentrodeIF = false;
-                    dentrodeTHEN = false;
-                    dentrodeELSE = true;
+                    insideIf = false;
+                    insideThen = false;
+                    insideElse = true;
 
-                    ocorreuMudancaEstruturaIf = true;
+                    structureChangeOccurredIf = true;
                 }
 
-                if (tk is EndIf)
+                if (token is EndIf)
                 {
-                    dentrodeIF = false;
-                    dentrodeTHEN = false;
-                    dentrodeELSE = false;
+                    insideIf = false;
+                    insideThen = false;
+                    insideElse = false;
 
-                    ocorreuMudancaEstruturaIf = true;
+                    structureChangeOccurredIf = true;
                 }
 
-                Token tkAnterior = null;
-                Token tkProximo = null;
+                Token previousToken = null;
+                Token nextToken1 = null;
 
-                if (Pos > 0)
+                if (i > 0)
                 {
-                    tkAnterior = Analise.SourceCode[Pos - 1];
+                    previousToken = lexicalAnalysis.SourceCode[i - 1];
                 }
 
-                if (Pos < Analise.SourceCode.Count - 1)
+                if (i < lexicalAnalysis.SourceCode.Count - 1)
                 {
-                    tkProximo = Analise.SourceCode[Pos + 1];
+                    nextToken1 = lexicalAnalysis.SourceCode[i + 1];
                 }
 
-                if (tk is Logic  && !dentrodeIF)
+                if (token is Logic logic  && !insideIf)
                 {
-                    this._mensagemerro = "Erro de sintaxe: Operador Lógico " + ((Logic) tk).Chain.Valor + " fora de operador condicional na linha " + linha + ".";
-                    retorno = false;
+                    _errorMessage = $"Syntax error: Logical operator {logic.Chain.Valor} outside conditional operator on line: {line}.";
+                    validator = false;
                     break;
                 }
 
-                if (dentrodeIF)
+                if (insideIf)
                 {
-                    if (tk is If)
+                    if (token is If @if)
                     {
-                        ConteudoIf += ((If) tk).Chain.Valor;
+                        contentIf += @if.Chain.Valor;
                     }
-                    else if (tk is Comparison)
+                    else if (token is Comparison comparison)
                     {
-                        ConteudoIf += ((Comparison) tk).Chain.Valor;
+                        contentIf += comparison.Chain.Valor;
                     }
-                    else if (tk is Mathematics)
+                    else if (token is Mathematics mathematics)
                     {
-                        ConteudoIf += ((Mathematics) tk).Chain.Valor;
+                        contentIf += mathematics.Chain.Valor;
                     }
-                    else if (tk is Logic)
+                    else if (token is Logic logic1)
                     {
-                        ConteudoIf += ((Logic) tk).Chain.Valor;
+                        contentIf += logic1.Chain.Valor;
                     }
-                    else if (tk is Value)
+                    else if (token is Value value1)
                     {
-                        if (((Value) tk).NomeVariavel != null)
+                        if (value1.NomeVariavel != null)
                         {
-                            ConteudoIf += ((Value) tk).NomeVariavel;
+                            contentIf += value1.NomeVariavel;
                         }
                         else
                         {
-                            ConteudoIf += ((Value) tk).ValorVariavel;
+                            contentIf += value1.ValorVariavel;
                         }
                     }
                     else
                     {
-                        this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new If().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
-                        retorno = false;
+                        _errorMessage = $"Syntax error: Conditional Operator {new If().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                        validator = false;
                         break;
                     }
 
-                    ConteudoIf += " ";
+                    contentIf += " ";
                 }
-                else if (dentrodeTHEN)
+                else if (insideThen)
                 {
-                    if (ConteudoIf != "")
+                    if (contentIf != "")
                     {
-                        ConteudoIf += new Else().Chain.Valor;
-                        string ER = ExpressaoRegularSeEntao();
-                        Match match = Regex.Match(ConteudoIf, ER);
+                        contentIf += new Else().Chain.Valor;
+                        string ER = GetIfThenRegularExpression();
+                        Match match = Regex.Match(contentIf, ER);
 
                         if (match.Success)
                         {
-                            ConteudoIf = "";
+                            contentIf = "";
                         }
                         else
                         {
-                            this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new If().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
-                            retorno = false;
+                            _errorMessage = $"Syntax error: Conditional Operator {new If().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                            validator = false;
                             break;
                         }
                     }
                     else
                     {
-                        if (tk is Comparison)
+                        if (token is Comparison comparison)
                         {
-                            ConteudoThen_PorLinha += ((Comparison) tk).Chain.Valor;
+                            contentThenPerLine += comparison.Chain.Valor;
                         }
-                        else if (tk is Mathematics)
+                        else if (token is Mathematics mathematics)
                         {
-                            ConteudoThen_PorLinha += ((Mathematics) tk).Chain.Valor;
+                            contentThenPerLine += mathematics.Chain.Valor;
                         }
-                        else if (tk is Logic)
+                        else if (token is Logic logic1)
                         {
-                            ConteudoThen_PorLinha += ((Logic) tk).Chain.Valor;
+                            contentThenPerLine += logic1.Chain.Valor;
                         }
-                        else if (tk is Value)
+                        else if (token is Value value1)
                         {
-                            if (((Value) tk).NomeVariavel != null)
+                            if (value1.NomeVariavel != null)
                             {
-                                ConteudoThen_PorLinha += ((Value) tk).NomeVariavel;
+                                contentThenPerLine += value1.NomeVariavel;
                             }
                             else
                             {
-                                ConteudoThen_PorLinha += ((Value) tk).ValorVariavel;
+                                contentThenPerLine += value1.ValorVariavel;
                             }
                         }
                         else
                         {
-                            this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new Then().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
-                            retorno = false;
+                            _errorMessage = $"Syntax error: Conditional Operator {new Then().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                            validator = false;
                             break;
                         }
                     }
 
-                    if (tkAnterior != null)
+                    if (previousToken != null)
                     {
-                        if ((!(tk is Then) && tk.Linha != tkProximo.Linha) || tkProximo is Else || tkProximo is EndIf)
+                        if (!(token is Then) && token.Linha != nextToken1.Linha || nextToken1 is Else || nextToken1 is EndIf)
                         {
-                            string ER = ExpressaoRegularExpressoes();
-                            Match match = Regex.Match(ConteudoThen_PorLinha, ER);
+                            string ER = GetExpressionsRegularExpression();
+                            Match match = Regex.Match(contentThenPerLine, ER);
 
                             if (match.Success)
                             {
-                                ConteudoThen_PorLinha = "";
+                                contentThenPerLine = "";
                             }
                             else
                             {
-                                this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new Then().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
-                                retorno = false;
+                                _errorMessage = $"Syntax error: Conditional Operator {new Then().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                                validator = false;
                                 break;
                             }
                         }
                     }
 
-                    if (ConteudoThen_PorLinha != "")
+                    if (contentThenPerLine != "")
                     {
-                        ConteudoThen_PorLinha += " ";
+                        contentThenPerLine += " ";
                     }
                 }
-                else if (dentrodeELSE)
+                else if (insideElse)
                 {
-                    if (tk is Comparison)
+                    if (token is Comparison comparison)
                     {
-                        ConteudoElse_PorLinha += ((Comparison) tk).Chain.Valor;
+                        contentElsePerLine += comparison.Chain.Valor;
                     }
-                    else if (tk is Mathematics)
+                    else if (token is Mathematics mathematics)
                     {
-                        ConteudoElse_PorLinha += ((Mathematics) tk).Chain.Valor;
+                        contentElsePerLine += mathematics.Chain.Valor;
                     }
-                    else if (tk is Logic)
+                    else if (token is Logic logic1)
                     {
-                        ConteudoElse_PorLinha += ((Logic) tk).Chain.Valor;
+                        contentElsePerLine += logic1.Chain.Valor;
                     }
-                    else if (tk is Value)
+                    else if (token is Value value1)
                     {
-                        if (((Value) tk).NomeVariavel != null)
+                        if (value1.NomeVariavel != null)
                         {
-                            ConteudoElse_PorLinha += ((Value) tk).NomeVariavel;
+                            contentElsePerLine += value1.NomeVariavel;
                         }
                         else
                         {
-                            ConteudoElse_PorLinha += ((Value) tk).ValorVariavel;
+                            contentElsePerLine += value1.ValorVariavel;
                         }
                     }
-                    else if (!(tk is Else))
+                    else if (!(token is Else))
                     {
-                        this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new Else().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
-                        retorno = false;
+                        _errorMessage = $"Syntax error: Conditional Operator {new Else().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                        validator = false;
                         break;
                     }
                     
-                    if (tkAnterior != null)
+                    if (previousToken != null)
                     {
-                        if ((!(tk is Else) && tk.Linha != tkProximo.Linha) || tkProximo is EndIf)
+                        if (!(token is Else) && token.Linha != nextToken1.Linha || nextToken1 is EndIf)
                         {
-                            if (ConteudoElse_PorLinha.Trim() != "")
+                            if (contentElsePerLine.Trim() != "")
                             {
-                                string ER = ExpressaoRegularExpressoes();
-                                Match match = Regex.Match(ConteudoElse_PorLinha, ER);
+                                string ER = GetExpressionsRegularExpression();
+                                Match match = Regex.Match(contentElsePerLine, ER);
 
                                 if (match.Success)
                                 {
-                                    ConteudoElse_PorLinha = "";
+                                    contentElsePerLine = "";
                                 }
                                 else
                                 {
-                                    this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new Else().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
-                                    retorno = false;
+                                    _errorMessage = $"Syntax error: Conditional Operator {new Else().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                                    validator = false;
                                     break;
                                 }
                             }
                         }
                     }
 
-                    if (ConteudoElse_PorLinha != "")
+                    if (contentElsePerLine != "")
                     {
-                        ConteudoElse_PorLinha += " ";
+                        contentElsePerLine += " ";
                     }
                 }
                 else
                 {
-                    if (ConteudoIf != "")
+                    if (contentIf != "")
                     {
-                        this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new If().Chain.Valor + " sem fechamento do operador "
-                                             + new Then().Chain.Valor + " identificado na linha " + linha + ".";
-                        retorno = false;
+                        _errorMessage = $"Syntax error: Conditional Operator {new If().Chain.Valor} without closing the {new Then().Chain.Valor} operator identified in line: {line}.";
+                        validator = false;
                         break;
                     }
                 }
             }
 
-            return retorno;
+            return validator;
         }
     }
 }

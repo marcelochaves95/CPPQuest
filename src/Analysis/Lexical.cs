@@ -40,20 +40,20 @@ namespace Sesamo.Analysis
         {
             string reassembledCode = "";
             bool insideString = false;
-            for (int pos1 = 0; pos1 < code.Length; pos1++)
+            for (int i = 0; i < code.Length; i++)
             {
-                char letter = code[pos1];
+                char letter = code[i];
                 char previousLetter = new char();
                 char nextLetter = new char();
 
-                if (pos1 > 0)
+                if (i > 0)
                 {
-                    previousLetter = code[pos1 - 1];
+                    previousLetter = code[i - 1];
                 }
 
-                if (pos1 < code.Length - 1)
+                if (i < code.Length - 1)
                 {
-                    nextLetter = code[pos1 + 1];
+                    nextLetter = code[i + 1];
                 }
 
                 if (letter == '"')
