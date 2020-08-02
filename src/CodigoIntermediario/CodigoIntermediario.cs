@@ -13,19 +13,6 @@ namespace Linguagem
             }
         }
 
-        private Mensagens _mensagens;
-        public Mensagens Mensagens
-        {
-            get
-            {
-                return _mensagens;
-            }
-            set
-            {
-                _mensagens = value;
-            }
-        }
-
         public CodigoIntermediario()
         {
         }

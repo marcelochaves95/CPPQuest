@@ -5,7 +5,6 @@ namespace Linguagem
 {
     public class AnalisadorSintatico
     {
-        private Mensagens _mensagens;
         private string _mensagemerro;
         public string MensagemErro
         {
