@@ -1,22 +1,22 @@
 namespace Sesamo.Operators.Logical
 {
-    public class OAnd : OLogico, IOperador
+    public class And : Logic, IOperator
     {
         #region IOperador Members
 
         private string _cadeia = "and";
-        public override Cadeia Cadeia
+        public override Chain Chain
         {
-            get { return new Cadeia(_cadeia); }
+            get { return new Chain(_cadeia); }
         }
 
         #endregion
 
-        public OAnd()
+        public And()
         {
         }
 
-        public OAnd(int NumeroLinha)
+        public And(int NumeroLinha)
         {
             this.Linha = NumeroLinha;
         }

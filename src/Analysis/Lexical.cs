@@ -9,7 +9,7 @@ using Sesamo.Variables;
 
 namespace Sesamo.Analysis
 {
-    public class AnalisadorLexico
+    public class Lexical
     {
         private string Espaco = "º";
         private string _mensagemerro;
@@ -19,8 +19,8 @@ namespace Sesamo.Analysis
             set { _mensagemerro = value; }
         }
 
-        private Variavel var = null;
-        public Variavel Variavel
+        private Variable var = null;
+        public Variable Variable
         {
             get { return var; }
         }
@@ -38,7 +38,7 @@ namespace Sesamo.Analysis
             }
         }
 
-        public bool Validar(string Codigo, List<Valor> ListaVariaveis)
+        public bool Validar(string Codigo, List<Value> ListaVariaveis)
         {
             //*** SUBSTITUI + de 1 ESPAÇOS POR 1 ESPAÇO SOMENTE FORA DE STRINGS IDENTIFICADO POR COMEÇAR COM (") E TERMINAR COM (")
             //*** SUBSTITUI ESPAÇO PELA VARIAVEL Espaco PARA NÃO DAR PROBLEMA DE IDENTIFICAÇÃO DE TOKENS STRINGS COM SPAÇO QUANDO FIZER SPLIT
@@ -121,109 +121,109 @@ namespace Sesamo.Analysis
                         continue;
                     }
 
-                    var = new Variavel(ListaVariaveis);
+                    var = new Variable(ListaVariaveis);
                     Int64 numeroConvertido = 0;
                     
                     //*** SE FOR UMA STRING
                     if (valor[0] == '"')
                     {
-                        CodigoFonte.Add(new Valor(valor, Tipos.Txt, Linha));
+                        CodigoFonte.Add(new Value(valor, Types.Txt, Linha));
                     }
                     //*** SE FOR NÚMERO
                     else if (Int64.TryParse(valor, out numeroConvertido))
                     {
-                        CodigoFonte.Add(new Valor(numeroConvertido.ToString(), Tipos.Dec, Linha));
+                        CodigoFonte.Add(new Value(numeroConvertido.ToString(), Types.Dec, Linha));
                     }
                     //*** SE É UM NOME DE VARIÁVEL
                     else if (var.ExisteVariavel(valor))
                     {
-                        Valor variavel = var.getVariavel(valor).Copia();
+                        Value variavel = var.getVariavel(valor).Copia();
                         variavel.Linha = Linha;
                         CodigoFonte.Add(variavel);
                     }
                     
                     //*** SE É UM IF
-                    else if (new OSe().Cadeia.Valor == valor)
+                    else if (new If().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OSe(Linha));
+                        CodigoFonte.Add(new If(Linha));
                     }
                     //*** SE É UM THEN
-                    else if (new OEntao().Cadeia.Valor == valor)
+                    else if (new Then().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OEntao(Linha));
+                        CodigoFonte.Add(new Then(Linha));
                     }
                     //*** SE É UM ELSE
-                    else if (new OSenao().Cadeia.Valor == valor)
+                    else if (new Else().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OSenao(Linha));
+                        CodigoFonte.Add(new Else(Linha));
                     }
                     //*** SE É UM ENDIF
-                    else if (new OFimSe().Cadeia.Valor == valor)
+                    else if (new EndIf().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OFimSe(Linha));
+                        CodigoFonte.Add(new EndIf(Linha));
                     }
                     
                     //*** SE É UM IGUAL
-                    else if (new OIgual().Cadeia.Valor == valor)
+                    else if (new Equal().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OIgual(Linha));
+                        CodigoFonte.Add(new Equal(Linha));
                     }
                     //*** SE É UM DIFERENTE
-                    else if (new ODiferente().Cadeia.Valor == valor)
+                    else if (new Different().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new ODiferente(Linha));
+                        CodigoFonte.Add(new Different(Linha));
                     }
                     //*** SE É UM MAIOR
-                    else if (new OMaior().Cadeia.Valor == valor)
+                    else if (new Bigger().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OMaior(Linha));
+                        CodigoFonte.Add(new Bigger(Linha));
                     }
                     //*** SE É UM MENOR
-                    else if (new OMenor().Cadeia.Valor == valor)
+                    else if (new Less().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OMenor(Linha));
+                        CodigoFonte.Add(new Less(Linha));
                     }
                     //*** SE É UM MAIOR OU IGUAL >=
-                    else if (new OMaiorIgual().Cadeia.Valor == valor)
+                    else if (new BiggerOrEqual().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OMaiorIgual(Linha));
+                        CodigoFonte.Add(new BiggerOrEqual(Linha));
                     }
                     //*** SE É UM MENOR OU IGUAL <=
-                    else if (new OMenorIgual().Cadeia.Valor == valor)
+                    else if (new LessOrEqual().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OMenorIgual(Linha));
+                        CodigoFonte.Add(new LessOrEqual(Linha));
                     }
 
                     //*** SE É UM SOMA
-                    else if (new OSoma().Cadeia.Valor == valor)
+                    else if (new Addition().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OSoma(Linha));
+                        CodigoFonte.Add(new Addition(Linha));
                     }
                     //*** SE É UM SUBTRAÇÃO
-                    else if (new OSubtracao().Cadeia.Valor == valor)
+                    else if (new Subtraction().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OSubtracao(Linha));
+                        CodigoFonte.Add(new Subtraction(Linha));
                     }
                     //*** SE É UM MULTIPLICAÇÃO
-                    else if (new OMultiplicacao().Cadeia.Valor == valor)
+                    else if (new Multiplication().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OMultiplicacao(Linha));
+                        CodigoFonte.Add(new Multiplication(Linha));
                     }
                     //*** SE É UM DIVISÃO
-                    else if (new ODivisao().Cadeia.Valor == valor)
+                    else if (new Division().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new ODivisao(Linha));
+                        CodigoFonte.Add(new Division(Linha));
                     }
 
                     //*** SE É UM OR
-                    else if (new OOr().Cadeia.Valor == valor)
+                    else if (new Or().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OOr(Linha));
+                        CodigoFonte.Add(new Or(Linha));
                     }
                     //*** SE É UM AND
-                    else if (new OAnd().Cadeia.Valor == valor)
+                    else if (new And().Chain.Valor == valor)
                     {
-                        CodigoFonte.Add(new OAnd(Linha));
+                        CodigoFonte.Add(new And(Linha));
                     }
                     //*** SE É VAZIO PULA
                     else if (valor == "")

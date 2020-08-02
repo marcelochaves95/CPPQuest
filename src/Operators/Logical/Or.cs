@@ -1,22 +1,22 @@
 namespace Sesamo.Operators.Logical
 {
-    public class OOr : OLogico, IOperador
+    public class Or : Logic, IOperator
     {
         #region IOperador Members
 
         private string _cadeia = "or";
-        public override Cadeia Cadeia
+        public override Chain Chain
         {
-            get { return new Cadeia(_cadeia); }
+            get { return new Chain(_cadeia); }
         }
 
         #endregion
 
-        public OOr()
+        public Or()
         {
         }
 
-        public OOr(int NumeroLinha)
+        public Or(int NumeroLinha)
         {
             this.Linha = NumeroLinha;
         }

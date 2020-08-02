@@ -1,22 +1,22 @@
 namespace Sesamo.Operators.Mathematical
 {
-    public class OMultiplicacao : OMatematico, IOperador
+    public class Multiplication : Mathematics, IOperator
     {
         #region IOperador Members
 
         private string _cadeia = "*";
-        public override Cadeia Cadeia
+        public override Chain Chain
         {
-            get { return new Cadeia(_cadeia); }
+            get { return new Chain(_cadeia); }
         }
 
         #endregion
 
-        public OMultiplicacao()
+        public Multiplication()
         {
         }
 
-        public OMultiplicacao(int NumeroLinha)
+        public Multiplication(int NumeroLinha)
         {
             this.Linha = NumeroLinha;
         }

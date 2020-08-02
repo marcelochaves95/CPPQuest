@@ -1,10 +1,10 @@
 namespace Sesamo.Operators
 {
-    public class Cadeia
+    public class Chain
     {
         private string valor_retorno;
 
-        public Cadeia(string valor)
+        public Chain(string valor)
         {
             valor_retorno = valor;
         }

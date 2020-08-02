@@ -2,16 +2,16 @@ using Sesamo.Tokens;
 
 namespace Sesamo.Variables
 {
-    public class Valor : Token
+    public class Value : Token
     {
-        public Valor(string Nome, string Valor, string TipoValor)
+        public Value(string Nome, string Valor, string TipoValor)
         {
             this._nomeVariavel = Nome;
             this._valorVariavel = Valor;
             this._tipo = TipoValor;
         }
 
-        public Valor(string Valor, string TipoValor, int NumeroLinha)
+        public Value(string Valor, string TipoValor, int NumeroLinha)
         {
             this._valorVariavel = Valor;
             this._tipo = TipoValor;
@@ -39,9 +39,9 @@ namespace Sesamo.Variables
             set { _tipo = value; }
         }
 
-        public Valor Copia()
+        public Value Copia()
         {
-            Valor vCopia = new Valor(this.ValorVariavel, this.Tipo, this.Linha);
+            Value vCopia = new Value(this.ValorVariavel, this.Tipo, this.Linha);
             vCopia.NomeVariavel = this.NomeVariavel;
             return vCopia;
         }

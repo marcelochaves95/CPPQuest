@@ -17,13 +17,13 @@ namespace Sesamo.Tokens
         {
             get
             {
-                if (this is Valor)
+                if (this is Value)
                 {
-                    _texto = ((Valor) this).NomeVariavel != null ? ((Valor) this).NomeVariavel : ((Valor) this).ValorVariavel.ToString();
+                    _texto = ((Value) this).NomeVariavel != null ? ((Value) this).NomeVariavel : ((Value) this).ValorVariavel.ToString();
                 }
                 else
                 {
-                    _texto = ((Operador) this).Cadeia.Valor;
+                    _texto = ((Operator) this).Chain.Valor;
                 }
 
                 return _texto;

@@ -1,22 +1,22 @@
 namespace Sesamo.Operators.Comparisons
 {
-    public class ODiferente : OComparacao, IOperador
+    public class Different : Comparison, IOperator
     {
         #region IOperador Members
 
         private string _cadeia = "!=";
-        public override Cadeia Cadeia
+        public override Chain Chain
         {
-            get { return new Cadeia(_cadeia); }
+            get { return new Chain(_cadeia); }
         }
 
         #endregion
 
-        public ODiferente()
+        public Different()
         {
         }
 
-        public ODiferente(int NumeroLinha)
+        public Different(int NumeroLinha)
         {
             this.Linha = NumeroLinha;
         }

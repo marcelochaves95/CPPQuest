@@ -1,22 +1,22 @@
 namespace Sesamo.Operators.Comparisons
 {
-    public class OMenorIgual : OComparacao, IOperador
+    public class LessOrEqual : Comparison, IOperator
     {
         #region IOperador Members
 
         private string _cadeia = "<=";
-        public override Cadeia Cadeia
+        public override Chain Chain
         {
-            get { return new Cadeia(_cadeia); }
+            get { return new Chain(_cadeia); }
         }
 
         #endregion
 
-        public OMenorIgual()
+        public LessOrEqual()
         {
         }
 
-        public OMenorIgual(int NumeroLinha)
+        public LessOrEqual(int NumeroLinha)
         {
             this.Linha = NumeroLinha;
         }

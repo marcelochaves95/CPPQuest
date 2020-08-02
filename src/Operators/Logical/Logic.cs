@@ -1,6 +1,6 @@
 namespace Sesamo.Operators.Logical
 {
-    public abstract class OLogico : Operador
+    public abstract class Logic : Operator
     {
     }
 }

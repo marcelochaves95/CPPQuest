@@ -1,6 +1,6 @@
 namespace Sesamo.Operators.Mathematical
 {
-    public abstract class OMatematico : Operador
+    public abstract class Mathematics : Operator
     {
     }
 }

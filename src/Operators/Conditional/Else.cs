@@ -1,22 +1,22 @@
 namespace Sesamo.Operators.Conditional
 {
-    public class OSenao : Operador, IOperador
+    public class Else : Operator, IOperator
     {
         #region IOperador Members
 
         private string _cadeia = "else";
-        public override Cadeia Cadeia
+        public override Chain Chain
         {
-            get { return new Cadeia(_cadeia); }
+            get { return new Chain(_cadeia); }
         }
 
         #endregion
 
-        public OSenao()
+        public Else()
         {
         }
 
-        public OSenao(int NumeroLinha)
+        public Else(int NumeroLinha)
         {
             this.Linha = NumeroLinha;
         }

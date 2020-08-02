@@ -10,7 +10,7 @@ using Sesamo.Variables;
 
 namespace Sesamo.Compilations
 {
-    public class Compilador
+    public class Compiler
     {
         private List<string> _mensagemerro = new List<string>();
         public List<string> MensagemErro
@@ -19,15 +19,15 @@ namespace Sesamo.Compilations
             set => _mensagemerro = value;
         }
 
-        public void Executar(CodigoIntermediario Codigo, Variavel listaVariavel)
+        public void Executar(Intermediate Codigo, Variable listaVariable)
         {
-            foreach (ExpressaoCodigoIntermediario expressao in Codigo.Codigo)
+            foreach (IntermediateExpression expressao in Codigo.Codigo)
             {
                 ExecutarExpressao(expressao);
             }
         }
 
-        private void ExecutarExpressao(ExpressaoCodigoIntermediario expressao)
+        private void ExecutarExpressao(IntermediateExpression expressao)
         {
             if (expressao.Condicao.Count > 0)
             {
@@ -59,22 +59,22 @@ namespace Sesamo.Compilations
             StringBuilder sb = new StringBuilder();
             foreach (Token tk in Condicao)
             {
-                if (tk is Valor)
+                if (tk is Value)
                 {
-                    sb.Append(((Valor) tk).ValorVariavel);
+                    sb.Append(((Value) tk).ValorVariavel);
                 }
 
-                if (tk is OMatematico)
-                {
-                    sb.Append(tk.Texto);
-                }
-
-                if (tk is OLogico)
+                if (tk is Mathematics)
                 {
                     sb.Append(tk.Texto);
                 }
 
-                if (tk is OComparacao)
+                if (tk is Logic)
+                {
+                    sb.Append(tk.Texto);
+                }
+
+                if (tk is Comparison)
                 {
                     sb.Append(tk.Texto);
                 }
@@ -96,19 +96,19 @@ namespace Sesamo.Compilations
 
             foreach (Token tk in Instrucao)
             {
-                if (tk is Valor)
+                if (tk is Value)
                 {
-                    sb.Append(((Valor) tk).ValorVariavel);
+                    sb.Append(((Value) tk).ValorVariavel);
                     sbTexto.Append(tk.Texto);
                 }
 
-                if (tk is OMatematico)
+                if (tk is Mathematics)
                 {
                     sb.Append(tk.Texto);
                     sbTexto.Append(tk.Texto);
                 }
 
-                if (tk is OComparacao)
+                if (tk is Comparison)
                 {
                     sb.Append(tk.Texto);
                     sbTexto.Append(tk.Texto);

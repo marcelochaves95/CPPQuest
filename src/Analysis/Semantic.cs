@@ -10,7 +10,7 @@ using Sesamo.Variables;
 
 namespace Sesamo.Analysis
 {
-    public class AnalisadorSematico
+    public class Semantic
     {
         private string _mensagemerro;
         public string MensagemErro
@@ -19,16 +19,16 @@ namespace Sesamo.Analysis
             set => _mensagemerro = value;
         }
 
-        private AnalisadorSintatico _analise;
-        public AnalisadorSintatico AnaliseSintatica
+        private Parser _analise;
+        public Parser AnaliseSintatica
         {
             get => _analise;
         }
         
-        CodigoIntermediario _codigoIntermediario = new CodigoIntermediario();
-        public CodigoIntermediario Codigo
+        Intermediate _intermediate = new Intermediate();
+        public Intermediate Codigo
         {
-            get => _codigoIntermediario;
+            get => _intermediate;
         }
 
         public DataTable getCodigoIntermediario()
@@ -38,7 +38,7 @@ namespace Sesamo.Analysis
             retorno.Columns.Add("Expressao");
             retorno.Columns.Add("ExpCondicaoNaoAtendida");
 
-            foreach (ExpressaoCodigoIntermediario expressao in _codigoIntermediario.Codigo)
+            foreach (IntermediateExpression expressao in _intermediate.Codigo)
             {
                 DataRow DR = retorno.NewRow();
                 StringBuilder exp = new StringBuilder();
@@ -73,7 +73,7 @@ namespace Sesamo.Analysis
             return retorno;
         }
 
-        public bool Validar(AnalisadorSintatico Analise)
+        public bool Validar(Parser Analise)
         {
             bool retorno = true;
 
@@ -82,7 +82,7 @@ namespace Sesamo.Analysis
             bool dentrodeIF = false;
             bool dentrodeTHEN = false;
             bool dentrodeELSE = false;
-            ExpressaoCodigoIntermediario expressao = new ExpressaoCodigoIntermediario();
+            IntermediateExpression expressao = new IntermediateExpression();
 
             for (int pos = 0; pos < Analise.AnalisadorLexica.CodigoFonte.Count; pos++)
             {
@@ -105,13 +105,13 @@ namespace Sesamo.Analysis
 
                 // TODO: Conferir esse primeiro if
                 // Comparação original tk is OMatematico && tk is OComparacao
-                if (tk is OMatematico && tk is OComparacao)
+                if (tk is Mathematics && tk is Comparison)
                 {
-                    if (tk is OMaior || tk is OMenor || tk is OMaiorIgual || tk is OMenorIgual)
+                    if (tk is Bigger || tk is Less || tk is BiggerOrEqual || tk is LessOrEqual)
                     {
-                        if (((Valor) tkAnterior).Tipo != Tipos.Dec && ((Valor) tkAnterior).Tipo != Tipos.Hex && ((Valor) tkAnterior).Tipo != Tipos.Bin)
+                        if (((Value) tkAnterior).Tipo != Types.Dec && ((Value) tkAnterior).Tipo != Types.Hex && ((Value) tkAnterior).Tipo != Types.Bin)
                         {
-                            string NomeValor = ((Valor) tkAnterior).NomeVariavel == "" ? ((Valor) tkAnterior).ValorVariavel.ToString() : ((Valor) tkAnterior).NomeVariavel;
+                            string NomeValor = ((Value) tkAnterior).NomeVariavel == "" ? ((Value) tkAnterior).ValorVariavel.ToString() : ((Value) tkAnterior).NomeVariavel;
                             this._mensagemerro = "Os tipo do valor " + NomeValor + " não é de possível comparação na linha: " + linha + ".";
                             retorno = false;
                             break;
@@ -119,17 +119,17 @@ namespace Sesamo.Analysis
                     }
                     else
                     {
-                        this._mensagemerro = "Não é possível efetuar operação aritmética com valores do tipo " + ((Valor) tk).Tipo + ". Erro na linha: " + linha + ".";
+                        this._mensagemerro = "Não é possível efetuar operação aritmética com valores do tipo " + ((Value) tk).Tipo + ". Erro na linha: " + linha + ".";
                         retorno = false;
                         break;
                     }
                 }
 
-                if (tk is OComparacao)
+                if (tk is Comparison)
                 {
-                    if (((Valor) tkAnterior).Tipo != Tipos.Dec || ((Valor) tkAnterior).Tipo != Tipos.Hex || ((Valor) tkAnterior).Tipo != Tipos.Bin)
+                    if (((Value) tkAnterior).Tipo != Types.Dec || ((Value) tkAnterior).Tipo != Types.Hex || ((Value) tkAnterior).Tipo != Types.Bin)
                     {
-                        if (((Valor) tkAnterior).Tipo != ((Valor) tkProximo).Tipo)
+                        if (((Value) tkAnterior).Tipo != ((Value) tkProximo).Tipo)
                         {
                             this._mensagemerro = "Os tipos de valores devem ser iguais na comparação da linha " + linha + ".";
                             retorno = false;
@@ -137,9 +137,9 @@ namespace Sesamo.Analysis
                         }
                         else
                         {
-                            if (!(tk is OIgual))
+                            if (!(tk is Equal))
                             {
-                                this._mensagemerro = "Não é possível efetuar comparação numérica com valores do tipo " + ((Valor) tkAnterior).Tipo + " e " + ((Valor) tkProximo).Tipo
+                                this._mensagemerro = "Não é possível efetuar comparação numérica com valores do tipo " + ((Value) tkAnterior).Tipo + " e " + ((Value) tkProximo).Tipo
                                                      + ". Erro na linha: " + linha + ".";
                                 retorno = false;
                                 break;
@@ -154,10 +154,10 @@ namespace Sesamo.Analysis
                     {
                         if (expressao.Expressao.Count > 0 || expressao.ExpressaoCondicaoNaoAtendida.Count > 0)
                         {
-                            _codigoIntermediario.AdicionarExpressao(expressao);
+                            _intermediate.AdicionarExpressao(expressao);
 
-                            ExpressaoCodigoIntermediario expressaoTemp = new ExpressaoCodigoIntermediario();
-                            if ((dentrodeTHEN || dentrodeELSE) && !(tk is OFimSe))
+                            IntermediateExpression expressaoTemp = new IntermediateExpression();
+                            if ((dentrodeTHEN || dentrodeELSE) && !(tk is EndIf))
                             {
                                 expressaoTemp.Condicao = expressao.getCopiaCondicao();
                             }
@@ -165,14 +165,14 @@ namespace Sesamo.Analysis
                             expressao = expressaoTemp;
                         }
 
-                        if (tk is OFimSe && expressao.Condicao.Count > 0)
+                        if (tk is EndIf && expressao.Condicao.Count > 0)
                         {
                             expressao.Condicao = new List<Token>();
                         }
                     }
                 }
 
-                if (tk is OSe)
+                if (tk is If)
                 {
                     dentrodeIF = true;
                     dentrodeTHEN = false;
@@ -181,7 +181,7 @@ namespace Sesamo.Analysis
                     continue;
                 }
 
-                if (tk is OEntao)
+                if (tk is Then)
                 {
                     dentrodeIF = false;
                     dentrodeTHEN = true;
@@ -190,7 +190,7 @@ namespace Sesamo.Analysis
                     continue;
                 }
 
-                if (tk is OSenao)
+                if (tk is Else)
                 {
                     dentrodeIF = false;
                     dentrodeTHEN = false;
@@ -199,7 +199,7 @@ namespace Sesamo.Analysis
                     continue;
                 }
 
-                if (tk is OFimSe)
+                if (tk is EndIf)
                 {
                     dentrodeIF = false;
                     dentrodeTHEN = false;
@@ -228,7 +228,7 @@ namespace Sesamo.Analysis
 
             if (expressao.Expressao.Count > 0 || expressao.ExpressaoCondicaoNaoAtendida.Count > 0)
             {
-                _codigoIntermediario.AdicionarExpressao(expressao);
+                _intermediate.AdicionarExpressao(expressao);
             }
 
             return retorno;

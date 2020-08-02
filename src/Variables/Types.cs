@@ -1,6 +1,6 @@
 namespace Sesamo.Variables
 {
-    public struct Tipos
+    public struct Types
     {
         public static string Dec
         {

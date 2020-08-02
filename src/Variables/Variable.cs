@@ -2,18 +2,18 @@ using System.Collections.Generic;
 
 namespace Sesamo.Variables
 {
-    public class Variavel
+    public class Variable
     {
-        public Variavel(List<Valor> Variaveis)
+        public Variable(List<Value> Variaveis)
         {
             //CARREGA A LISTA DE VARIAVEIS
             this._listaVariaveis = Variaveis;
         }
 
-        public Valor getVariavel(string Nome)
+        public Value getVariavel(string Nome)
         {
-            Valor retorno = null;
-            foreach (Valor var in _listaVariaveis)
+            Value retorno = null;
+            foreach (Value var in _listaVariaveis)
             {
                 if (var.NomeVariavel == Nome)
                 {
@@ -24,8 +24,8 @@ namespace Sesamo.Variables
             return retorno;
         }
 
-        private List<Valor> _listaVariaveis;
-        public List<Valor> ListaVariaveis
+        private List<Value> _listaVariaveis;
+        public List<Value> ListaVariaveis
         {
             get
             {
@@ -33,16 +33,16 @@ namespace Sesamo.Variables
             }
         }
 
-        public void AdicionarVariavel(Valor Variavel)
+        public void AdicionarVariavel(Value Variavel)
         {
             _listaVariaveis.Add(Variavel);
         }
 
-        public bool ExisteVariavel(Valor Variavel)
+        public bool ExisteVariavel(Value Variavel)
         {
             bool retorno = false;
 
-            foreach (Valor var in _listaVariaveis)
+            foreach (Value var in _listaVariaveis)
             {
                 if (var.NomeVariavel == Variavel.NomeVariavel)
                 {
@@ -58,7 +58,7 @@ namespace Sesamo.Variables
         {
             bool retorno = false;
 
-            Valor vl = new Valor(Variavel, "0", null);
+            Value vl = new Value(Variavel, "0", null);
             retorno = ExisteVariavel(vl);
 
             return retorno;

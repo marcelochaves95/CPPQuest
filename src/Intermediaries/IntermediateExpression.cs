@@ -3,13 +3,7 @@ using Sesamo.Tokens;
 
 namespace Sesamo.Intermediaries
 {
-    //*** Se a expressao é simples será a da propriedade Expressao
-    //*** Se a expressao é sob uma condição, para a propriedade Expressao 
-    // ser executada, precisa passar pela expressão da propriedade Condicao caso contrário
-    // a expressão da propriedade ExpressaoCondicaoNaoAtendida será executada 
-    // caso exista expressão nela
-
-    public class ExpressaoCodigoIntermediario
+    public class IntermediateExpression
     {
         private List<Token> _expressao = new List<Token>();
         public List<Token> Expressao
@@ -60,12 +54,12 @@ namespace Sesamo.Intermediaries
             }
         }
 
-        public ExpressaoCodigoIntermediario()
+        public IntermediateExpression()
         {
 
         }
 
-        public ExpressaoCodigoIntermediario(List<Token> expressao, List<Token> expressaocondicaonaoatendida, List<Token>condicao)
+        public IntermediateExpression(List<Token> expressao, List<Token> expressaocondicaonaoatendida, List<Token>condicao)
         {
             this._expressao = expressao;
             this._expressaocondicaonaoatendida = expressaocondicaonaoatendida;

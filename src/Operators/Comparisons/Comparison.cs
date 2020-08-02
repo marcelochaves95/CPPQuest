@@ -1,6 +1,6 @@
 namespace Sesamo.Operators.Comparisons
 {
-    public abstract class OComparacao : Operador
+    public abstract class Comparison : Operator
     {
     }
 }

@@ -1,22 +1,22 @@
 namespace Sesamo.Operators.Mathematical
 {
-    public class ODivisao : OMatematico, IOperador
+    public class Division : Mathematics, IOperator
     {
         #region IOperador Members
 
         private string _cadeia = @"/";
-        public override Cadeia Cadeia
+        public override Chain Chain
         {
-            get { return new Cadeia(_cadeia); }
+            get { return new Chain(_cadeia); }
         }
 
         #endregion
 
-        public ODivisao()
+        public Division()
         {
         }
 
-        public ODivisao(int NumeroLinha)
+        public Division(int NumeroLinha)
         {
             this.Linha = NumeroLinha;
         }

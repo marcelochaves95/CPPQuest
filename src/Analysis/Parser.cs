@@ -10,7 +10,7 @@ using Sesamo.Variables;
 
 namespace Sesamo.Analysis
 {
-    public class AnalisadorSintatico
+    public class Parser
     {
         private string _mensagemerro;
         public string MensagemErro
@@ -19,8 +19,8 @@ namespace Sesamo.Analysis
             set { _mensagemerro = value; }
         }
 
-        private AnalisadorLexico _analise;
-        public AnalisadorLexico AnalisadorLexica
+        private Lexical _analise;
+        public Lexical AnalisadorLexica
         {
             get { return _analise; }
         }
@@ -40,32 +40,32 @@ namespace Sesamo.Analysis
             StringBuilder sb = new StringBuilder();
 
             sb.Append(@"(\");
-            sb.Append(new OIgual().Cadeia.Valor);
+            sb.Append(new Equal().Chain.Valor);
 
             sb.Append(@"|");
 
             sb.Append(@"\");
-            sb.Append(new ODiferente().Cadeia.Valor);
+            sb.Append(new Different().Chain.Valor);
 
             sb.Append(@"|");
 
             sb.Append(@"\");
-            sb.Append(new OMaior().Cadeia.Valor);
+            sb.Append(new Bigger().Chain.Valor);
 
             sb.Append(@"|");
 
             sb.Append(@"\");
-            sb.Append(new OMenor().Cadeia.Valor);
+            sb.Append(new Less().Chain.Valor);
 
             sb.Append(@"|");
 
             sb.Append(@"\");
-            sb.Append(new OMaiorIgual().Cadeia.Valor);
+            sb.Append(new BiggerOrEqual().Chain.Valor);
 
             sb.Append(@"|");
 
             sb.Append(@"\");
-            sb.Append(new OMenorIgual().Cadeia.Valor);
+            sb.Append(new LessOrEqual().Chain.Valor);
 
             sb.Append(@")");
 
@@ -78,11 +78,11 @@ namespace Sesamo.Analysis
 
             sb.Append(@"(");
 
-            sb.Append(new OAnd().Cadeia.Valor);
+            sb.Append(new And().Chain.Valor);
 
             sb.Append(@"|");
 
-            sb.Append(new OOr().Cadeia.Valor);
+            sb.Append(new Or().Chain.Valor);
 
             sb.Append(@")");
 
@@ -103,22 +103,22 @@ namespace Sesamo.Analysis
             }
 
             sb.Append(@"\");
-            sb.Append(new OSoma().Cadeia.Valor);
+            sb.Append(new Addition().Chain.Valor);
 
             sb.Append(@"|");
 
             sb.Append(@"\");
-            sb.Append(new OSubtracao().Cadeia.Valor);
+            sb.Append(new Subtraction().Chain.Valor);
 
             sb.Append(@"|");
 
             sb.Append(@"\");
-            sb.Append(new OMultiplicacao().Cadeia.Valor);
+            sb.Append(new Multiplication().Chain.Valor);
 
             sb.Append(@"|");
 
             sb.Append(@"\");
-            sb.Append(new OMenor().Cadeia.Valor);
+            sb.Append(new Less().Chain.Valor);
 
             if (ComEspacoFinal)
             {
@@ -172,7 +172,7 @@ namespace Sesamo.Analysis
             return sb.ToString();
         }
 
-        public bool Validar(AnalisadorLexico Analise)
+        public bool Validar(Lexical Analise)
         {
             bool retorno = true;
 
@@ -199,7 +199,7 @@ namespace Sesamo.Analysis
                 if (linha != tk.Linha)
                 {
                     lido = "";
-                    if (tk is Operador && !(tk is OSe) && !(tk is OSenao) && !(tk is OFimSe))
+                    if (tk is Operator && !(tk is If) && !(tk is Else) && !(tk is EndIf))
                     {
                         this._mensagemerro = "Erro de sintaxe: Uso incorreto do operador no início da expressão. Linha " + tk.Linha + ".";
                         retorno = false;
@@ -213,7 +213,7 @@ namespace Sesamo.Analysis
                     Token ProximoToken = Analise.CodigoFonte[Pos - 1];
                     if (ProximoToken.Linha != linha)
                     {
-                        if (tk is OComparacao || tk is OMatematico || tk is OSe)
+                        if (tk is Comparison || tk is Mathematics || tk is If)
                         {
                             this._mensagemerro = "Erro de sintaxe: Uso incorreto do operador no final da expressão. Linha " + tk.Linha + ".";
                             retorno = false;
@@ -222,7 +222,7 @@ namespace Sesamo.Analysis
                     }
                 }
 
-                if (tk is Valor)
+                if (tk is Value)
                 {
                     if (lido == "" || lido == "O")
                     {
@@ -230,12 +230,12 @@ namespace Sesamo.Analysis
                     }
                     else
                     {
-                        this._mensagemerro = "Erro de sintaxe: Símbolo " + ((Valor) tk).NomeVariavel + " utilizado de forma incorreta na linha " + linha + ".";
+                        this._mensagemerro = "Erro de sintaxe: Símbolo " + ((Value) tk).NomeVariavel + " utilizado de forma incorreta na linha " + linha + ".";
                         retorno = false;
                         break;
                     }
                 }
-                else if (tk is Operador)
+                else if (tk is Operator)
                 {
                     if (lido == "" || lido == "V")
                     {
@@ -250,7 +250,7 @@ namespace Sesamo.Analysis
                 }
 
                 ocorreuMudancaEstruturaIf = false;
-                if (tk is OSe)
+                if (tk is If)
                 {
                     dentrodeIF = true;
                     dentrodeTHEN = false;
@@ -259,7 +259,7 @@ namespace Sesamo.Analysis
                     ocorreuMudancaEstruturaIf = true;
                 }
 
-                if (tk is OEntao)
+                if (tk is Then)
                 {
                     dentrodeIF = false;
                     dentrodeTHEN = true;
@@ -268,7 +268,7 @@ namespace Sesamo.Analysis
                     ocorreuMudancaEstruturaIf = true;
                 }
 
-                if (tk is OSenao)
+                if (tk is Else)
                 {
                     dentrodeIF = false;
                     dentrodeTHEN = false;
@@ -277,7 +277,7 @@ namespace Sesamo.Analysis
                     ocorreuMudancaEstruturaIf = true;
                 }
 
-                if (tk is OFimSe)
+                if (tk is EndIf)
                 {
                     dentrodeIF = false;
                     dentrodeTHEN = false;
@@ -299,45 +299,45 @@ namespace Sesamo.Analysis
                     tkProximo = Analise.CodigoFonte[Pos + 1];
                 }
 
-                if (tk is OLogico  && !dentrodeIF)
+                if (tk is Logic  && !dentrodeIF)
                 {
-                    this._mensagemerro = "Erro de sintaxe: Operador Lógico " + ((OLogico) tk).Cadeia.Valor + " fora de operador condicional na linha " + linha + ".";
+                    this._mensagemerro = "Erro de sintaxe: Operador Lógico " + ((Logic) tk).Chain.Valor + " fora de operador condicional na linha " + linha + ".";
                     retorno = false;
                     break;
                 }
 
                 if (dentrodeIF)
                 {
-                    if (tk is OSe)
+                    if (tk is If)
                     {
-                        ConteudoIf += ((OSe) tk).Cadeia.Valor;
+                        ConteudoIf += ((If) tk).Chain.Valor;
                     }
-                    else if (tk is OComparacao)
+                    else if (tk is Comparison)
                     {
-                        ConteudoIf += ((OComparacao) tk).Cadeia.Valor;
+                        ConteudoIf += ((Comparison) tk).Chain.Valor;
                     }
-                    else if (tk is OMatematico)
+                    else if (tk is Mathematics)
                     {
-                        ConteudoIf += ((OMatematico) tk).Cadeia.Valor;
+                        ConteudoIf += ((Mathematics) tk).Chain.Valor;
                     }
-                    else if (tk is OLogico)
+                    else if (tk is Logic)
                     {
-                        ConteudoIf += ((OLogico) tk).Cadeia.Valor;
+                        ConteudoIf += ((Logic) tk).Chain.Valor;
                     }
-                    else if (tk is Valor)
+                    else if (tk is Value)
                     {
-                        if (((Valor) tk).NomeVariavel != null)
+                        if (((Value) tk).NomeVariavel != null)
                         {
-                            ConteudoIf += ((Valor) tk).NomeVariavel;
+                            ConteudoIf += ((Value) tk).NomeVariavel;
                         }
                         else
                         {
-                            ConteudoIf += ((Valor) tk).ValorVariavel;
+                            ConteudoIf += ((Value) tk).ValorVariavel;
                         }
                     }
                     else
                     {
-                        this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new OSe().Cadeia.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
+                        this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new If().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
                         retorno = false;
                         break;
                     }
@@ -348,7 +348,7 @@ namespace Sesamo.Analysis
                 {
                     if (ConteudoIf != "")
                     {
-                        ConteudoIf += new OSenao().Cadeia.Valor;
+                        ConteudoIf += new Else().Chain.Valor;
                         string ER = ExpressaoRegularSeEntao();
                         Match match = Regex.Match(ConteudoIf, ER);
 
@@ -358,39 +358,39 @@ namespace Sesamo.Analysis
                         }
                         else
                         {
-                            this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new OSe().Cadeia.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
+                            this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new If().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
                             retorno = false;
                             break;
                         }
                     }
                     else
                     {
-                        if (tk is OComparacao)
+                        if (tk is Comparison)
                         {
-                            ConteudoThen_PorLinha += ((OComparacao) tk).Cadeia.Valor;
+                            ConteudoThen_PorLinha += ((Comparison) tk).Chain.Valor;
                         }
-                        else if (tk is OMatematico)
+                        else if (tk is Mathematics)
                         {
-                            ConteudoThen_PorLinha += ((OMatematico) tk).Cadeia.Valor;
+                            ConteudoThen_PorLinha += ((Mathematics) tk).Chain.Valor;
                         }
-                        else if (tk is OLogico)
+                        else if (tk is Logic)
                         {
-                            ConteudoThen_PorLinha += ((OLogico) tk).Cadeia.Valor;
+                            ConteudoThen_PorLinha += ((Logic) tk).Chain.Valor;
                         }
-                        else if (tk is Valor)
+                        else if (tk is Value)
                         {
-                            if (((Valor) tk).NomeVariavel != null)
+                            if (((Value) tk).NomeVariavel != null)
                             {
-                                ConteudoThen_PorLinha += ((Valor) tk).NomeVariavel;
+                                ConteudoThen_PorLinha += ((Value) tk).NomeVariavel;
                             }
                             else
                             {
-                                ConteudoThen_PorLinha += ((Valor) tk).ValorVariavel;
+                                ConteudoThen_PorLinha += ((Value) tk).ValorVariavel;
                             }
                         }
                         else
                         {
-                            this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new OEntao().Cadeia.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
+                            this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new Then().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
                             retorno = false;
                             break;
                         }
@@ -398,7 +398,7 @@ namespace Sesamo.Analysis
 
                     if (tkAnterior != null)
                     {
-                        if ((!(tk is OEntao) && tk.Linha != tkProximo.Linha) || tkProximo is OSenao || tkProximo is OFimSe)
+                        if ((!(tk is Then) && tk.Linha != tkProximo.Linha) || tkProximo is Else || tkProximo is EndIf)
                         {
                             string ER = ExpressaoRegularExpressoes();
                             Match match = Regex.Match(ConteudoThen_PorLinha, ER);
@@ -409,7 +409,7 @@ namespace Sesamo.Analysis
                             }
                             else
                             {
-                                this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new OEntao().Cadeia.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
+                                this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new Then().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
                                 retorno = false;
                                 break;
                             }
@@ -423,39 +423,39 @@ namespace Sesamo.Analysis
                 }
                 else if (dentrodeELSE)
                 {
-                    if (tk is OComparacao)
+                    if (tk is Comparison)
                     {
-                        ConteudoElse_PorLinha += ((OComparacao) tk).Cadeia.Valor;
+                        ConteudoElse_PorLinha += ((Comparison) tk).Chain.Valor;
                     }
-                    else if (tk is OMatematico)
+                    else if (tk is Mathematics)
                     {
-                        ConteudoElse_PorLinha += ((OMatematico) tk).Cadeia.Valor;
+                        ConteudoElse_PorLinha += ((Mathematics) tk).Chain.Valor;
                     }
-                    else if (tk is OLogico)
+                    else if (tk is Logic)
                     {
-                        ConteudoElse_PorLinha += ((OLogico) tk).Cadeia.Valor;
+                        ConteudoElse_PorLinha += ((Logic) tk).Chain.Valor;
                     }
-                    else if (tk is Valor)
+                    else if (tk is Value)
                     {
-                        if (((Valor) tk).NomeVariavel != null)
+                        if (((Value) tk).NomeVariavel != null)
                         {
-                            ConteudoElse_PorLinha += ((Valor) tk).NomeVariavel;
+                            ConteudoElse_PorLinha += ((Value) tk).NomeVariavel;
                         }
                         else
                         {
-                            ConteudoElse_PorLinha += ((Valor) tk).ValorVariavel;
+                            ConteudoElse_PorLinha += ((Value) tk).ValorVariavel;
                         }
                     }
-                    else if (!(tk is OSenao))
+                    else if (!(tk is Else))
                     {
-                        this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new OSenao().Cadeia.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
+                        this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new Else().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
                         retorno = false;
                         break;
                     }
                     
                     if (tkAnterior != null)
                     {
-                        if ((!(tk is OSenao) && tk.Linha != tkProximo.Linha) || tkProximo is OFimSe)
+                        if ((!(tk is Else) && tk.Linha != tkProximo.Linha) || tkProximo is EndIf)
                         {
                             if (ConteudoElse_PorLinha.Trim() != "")
                             {
@@ -468,7 +468,7 @@ namespace Sesamo.Analysis
                                 }
                                 else
                                 {
-                                    this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new OSenao().Cadeia.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
+                                    this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new Else().Chain.Valor + " com símbolo não reconhecido, identificado na linha " + linha + ".";
                                     retorno = false;
                                     break;
                                 }
@@ -485,8 +485,8 @@ namespace Sesamo.Analysis
                 {
                     if (ConteudoIf != "")
                     {
-                        this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new OSe().Cadeia.Valor + " sem fechamento do operador "
-                                             + new OEntao().Cadeia.Valor + " identificado na linha " + linha + ".";
+                        this._mensagemerro = "Erro de sintaxe: Operador Condicional " + new If().Chain.Valor + " sem fechamento do operador "
+                                             + new Then().Chain.Valor + " identificado na linha " + linha + ".";
                         retorno = false;
                         break;
                     }
