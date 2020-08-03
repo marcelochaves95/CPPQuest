@@ -21,7 +21,7 @@ namespace Sesamo.Compilations
 
         public void Execute(Intermediate code)
         {
-            foreach (IntermediateExpression expression in code.Codigo)
+            foreach (IntermediateExpression expression in code.Code)
             {
                 ExecuteExpression(expression);
             }

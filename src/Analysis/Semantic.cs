@@ -32,7 +32,7 @@ namespace Sesamo.Analysis
             dataTable.Columns.Add("Expressao");
             dataTable.Columns.Add("ExpCondicaoNaoAtendida");
 
-            foreach (IntermediateExpression code in _intermediate.Codigo)
+            foreach (IntermediateExpression code in _intermediate.Code)
             {
                 DataRow dataRow = dataTable.NewRow();
                 StringBuilder exp = new StringBuilder();
@@ -141,7 +141,7 @@ namespace Sesamo.Analysis
                     {
                         if (expression.Expressao.Count > 0 || expression.ExpressaoCondicaoNaoAtendida.Count > 0)
                         {
-                            _intermediate.AdicionarExpressao(expression);
+                            _intermediate.AddExpression(expression);
 
                             IntermediateExpression expressionTemp = new IntermediateExpression();
                             if ((insideThen || insideElse) && !(token is EndIf))
@@ -203,7 +203,7 @@ namespace Sesamo.Analysis
 
             if (expression.Expressao.Count > 0 || expression.ExpressaoCondicaoNaoAtendida.Count > 0)
             {
-                _intermediate.AdicionarExpressao(expression);
+                _intermediate.AddExpression(expression);
             }
 
             return validator;

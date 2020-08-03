@@ -4,27 +4,21 @@ namespace Sesamo.Intermediaries
 {
     public class Intermediate
     {
-        List<IntermediateExpression> _codigo = new List<IntermediateExpression>();
-        public List<IntermediateExpression> Codigo
-        {
-            get
-            {
-                return _codigo;
-            }
-        }
+        private readonly List<IntermediateExpression> _code = new List<IntermediateExpression>();
+        public List<IntermediateExpression> Code => _code;
 
         public Intermediate()
         {
         }
 
-        public Intermediate(List<IntermediateExpression> codigo)
+        public Intermediate(List<IntermediateExpression> code)
         {
-            _codigo = codigo;
+            _code = code;
         }
 
-        public void AdicionarExpressao(IntermediateExpression Expressao)
+        public void AddExpression(IntermediateExpression Expressao)
         {
-            _codigo.Add(Expressao);
+            _code.Add(Expressao);
         }
     }
 }
