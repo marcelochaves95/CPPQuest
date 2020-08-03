@@ -1,24 +1,17 @@
 namespace Sesamo.Operators.Logical
 {
-    public class Or : Logic, IOperator
+    public class Or : Logic
     {
-        #region IOperador Members
-
-        private string _cadeia = "or";
-        public override Chain Chain
-        {
-            get { return new Chain(_cadeia); }
-        }
-
-        #endregion
+        private const string _chain = "or";
+        public override Chain Chain => new Chain(_chain);
 
         public Or()
         {
         }
 
-        public Or(int NumeroLinha)
+        public Or(int lineNumber)
         {
-            this.Linha = NumeroLinha;
+            Linha = lineNumber;
         }
     }
 }
