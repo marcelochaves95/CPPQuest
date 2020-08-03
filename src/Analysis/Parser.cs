@@ -184,26 +184,26 @@ namespace Sesamo.Analysis
             for (int i = 0; i < lexicalAnalysis.SourceCode.Count; i++)
             {
                 Token token = lexicalAnalysis.SourceCode[i];
-                if (line != token.Linha)
+                if (line != token.Line)
                 {
                     read = "";
                     if (token is Operator && !(token is If) && !(token is Else) && !(token is EndIf))
                     {
-                        _errorMessage = $"Syntax error: Incorrect use of the operator at the beginning of the expression. Line: {token.Linha}.";
+                        _errorMessage = $"Syntax error: Incorrect use of the operator at the beginning of the expression. Line: {token.Line}.";
                         validator = false;
                         break;
                     }
                 }
 
-                line = token.Linha;
+                line = token.Line;
                 if (i < lexicalAnalysis.SourceCode.Count - 1)
                 {
                     Token nextToken = lexicalAnalysis.SourceCode[i - 1];
-                    if (nextToken.Linha != line)
+                    if (nextToken.Line != line)
                     {
                         if (token is Comparison || token is Mathematics || token is If)
                         {
-                            _errorMessage = $"Syntax error: Incorrect use of the operator at the end of the expression. Line: {token.Linha}.";
+                            _errorMessage = $"Syntax error: Incorrect use of the operator at the end of the expression. Line: {token.Line}.";
                             validator = false;
                             break;
                         }
@@ -373,7 +373,7 @@ namespace Sesamo.Analysis
 
                     if (previousToken != null)
                     {
-                        if (!(token is Then) && token.Linha != nextToken1.Linha || nextToken1 is Else || nextToken1 is EndIf)
+                        if (!(token is Then) && token.Line != nextToken1.Line || nextToken1 is Else || nextToken1 is EndIf)
                         {
                             string ER = GetExpressionsRegularExpression();
                             Match match = Regex.Match(contentThenPerLine, ER);
@@ -430,7 +430,7 @@ namespace Sesamo.Analysis
                     
                     if (previousToken != null)
                     {
-                        if (!(token is Else) && token.Linha != nextToken1.Linha || nextToken1 is EndIf)
+                        if (!(token is Else) && token.Line != nextToken1.Line || nextToken1 is EndIf)
                         {
                             if (contentElsePerLine.Trim() != "")
                             {

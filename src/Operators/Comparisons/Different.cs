@@ -11,7 +11,7 @@ namespace Sesamo.Operators.Comparisons
 
         public Different(int lineNumber)
         {
-            Linha = lineNumber;
+            Line = lineNumber;
         }
     }
 }

@@ -11,11 +11,11 @@ namespace Sesamo.Variables
             this._tipo = TipoValor;
         }
 
-        public Value(string Valor, string TipoValor, int NumeroLinha)
+        public Value(string Valor, string TipoValor, int numeroLine)
         {
             this._valorVariavel = Valor;
             this._tipo = TipoValor;
-            this.Linha = NumeroLinha;
+            this.Line = numeroLine;
         }
 
         private string _nomeVariavel;
@@ -41,7 +41,7 @@ namespace Sesamo.Variables
 
         public Value Copia()
         {
-            Value vCopia = new Value(this.ValorVariavel, this.Tipo, this.Linha);
+            Value vCopia = new Value(this.ValorVariavel, this.Tipo, this.Line);
             vCopia.NomeVariavel = this.NomeVariavel;
             return vCopia;
         }

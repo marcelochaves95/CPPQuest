@@ -11,7 +11,7 @@ namespace Sesamo.Operators.Mathematical
 
         public Division(int lineNumber)
         {
-            Linha = lineNumber;
+            Line = lineNumber;
         }
     }
 }

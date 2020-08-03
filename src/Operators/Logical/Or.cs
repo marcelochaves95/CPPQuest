@@ -11,7 +11,7 @@ namespace Sesamo.Operators.Logical
 
         public Or(int lineNumber)
         {
-            Linha = lineNumber;
+            Line = lineNumber;
         }
     }
 }

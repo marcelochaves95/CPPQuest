@@ -11,7 +11,7 @@ namespace Sesamo.Operators.Conditional
 
         public Else(int lineNumber)
         {
-            Linha = lineNumber;
+            Line = lineNumber;
         }
     }
 }

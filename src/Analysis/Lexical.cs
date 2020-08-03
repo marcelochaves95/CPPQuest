@@ -119,7 +119,7 @@ namespace Sesamo.Analysis
                     else if (variable.ExisteVariavel(value))
                     {
                         Value valueVariable = variable.getVariavel(value).Copia();
-                        valueVariable.Linha = line;
+                        valueVariable.Line = line;
                         SourceCode.Add(valueVariable);
                     }
                     else if (new If().Chain.Value == value)

@@ -80,7 +80,7 @@ namespace Sesamo.Analysis
                 Token token = semanticAnalysis.LexicalAnalysis.SourceCode[i];
                 Token previousToken = null;
                 Token nextToken = null;
-                int line = token.Linha;
+                int line = token.Line;
                 if (i > 0)
                 {
                     previousToken = semanticAnalysis.LexicalAnalysis.SourceCode[i - 1];
@@ -137,7 +137,7 @@ namespace Sesamo.Analysis
 
                 if (previousToken != null)
                 {
-                    if (previousToken.Linha != token.Linha)
+                    if (previousToken.Line != token.Line)
                     {
                         if (expression.Expression.Count > 0 || expression.UnmetConditionExpression.Count > 0)
                         {

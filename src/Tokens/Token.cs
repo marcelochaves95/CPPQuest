@@ -5,28 +5,28 @@ namespace Sesamo.Tokens
 {
     public abstract class Token
     {
-        private int _linha;
-        public int Linha
+        private int _line;
+        public int Line
         {
-            get { return _linha; }
-            set { _linha = value; }
+            get => _line;
+            set => _line = value;
         }
 
-        private string _texto;
-        public string Texto
+        private string _text;
+        public string Text
         {
             get
             {
                 if (this is Value)
                 {
-                    _texto = ((Value) this).NomeVariavel != null ? ((Value) this).NomeVariavel : ((Value) this).ValorVariavel.ToString();
+                    _text = (this as Value)?.NomeVariavel != null ? (this as Value)?.NomeVariavel : (this as Value)?.ValorVariavel;
                 }
                 else
                 {
-                    _texto = ((Operator) this).Chain.Value;
+                    _text = (this as Operator)?.Chain.Value;
                 }
 
-                return _texto;
+                return _text;
             }
         }
     }
