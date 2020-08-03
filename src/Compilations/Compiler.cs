@@ -12,128 +12,111 @@ namespace Sesamo.Compilations
 {
     public class Compiler
     {
-        private List<string> _mensagemerro = new List<string>();
-        public List<string> MensagemErro
+        private List<string> _errorMessages = new List<string>();
+        public List<string> ErrorMessages
         {
-            get => _mensagemerro;
-            set => _mensagemerro = value;
+            get => _errorMessages;
+            set => _errorMessages = value;
         }
 
-        public void Executar(Intermediate Codigo, Variable listaVariable)
+        public void Execute(Intermediate code)
         {
-            foreach (IntermediateExpression expressao in Codigo.Codigo)
+            foreach (IntermediateExpression expression in code.Codigo)
             {
-                ExecutarExpressao(expressao);
+                ExecuteExpression(expression);
             }
         }
 
-        private void ExecutarExpressao(IntermediateExpression expressao)
+        private void ExecuteExpression(IntermediateExpression expression)
         {
-            if (expressao.Condicao.Count > 0)
+            if (expression.Condicao.Count > 0)
             {
-                if (CondicaoExpressaoValida(expressao.Condicao))
+                if (IsConditionExpressionValid(expression.Condicao))
                 {
-                    if (expressao.Expressao.Count > 0)
+                    if (expression.Expressao.Count > 0)
                     {
-                        ExecutarInstrucao(expressao.Expressao);
+                        ExecuteInstruction(expression.Expressao);
                     }
                 }
                 else
                 {
-                    if (expressao.ExpressaoCondicaoNaoAtendida.Count > 0)
+                    if (expression.ExpressaoCondicaoNaoAtendida.Count > 0)
                     {
-                        ExecutarInstrucao(expressao.ExpressaoCondicaoNaoAtendida);
+                        ExecuteInstruction(expression.ExpressaoCondicaoNaoAtendida);
                     }
                 }
             }
             else
             {
-                ExecutarInstrucao(expressao.Expressao);
+                ExecuteInstruction(expression.Expressao);
             }
         }
 
-        private bool CondicaoExpressaoValida(List<Token> Condicao)
+        private bool IsConditionExpressionValid(List<Token> condition)
         {
-            bool retorno = true;
-
-            StringBuilder sb = new StringBuilder();
-            foreach (Token tk in Condicao)
+            bool validator = true;
+            StringBuilder builder = new StringBuilder();
+            foreach (Token token in condition)
             {
-                if (tk is Value)
+                switch (token)
                 {
-                    sb.Append(((Value) tk).ValorVariavel);
+                    case Value value:
+                        builder.Append(value.ValorVariavel);
+                        break;
+                    case Mathematics _:
+                    case Logic _:
+                    case Comparison _:
+                        builder.Append(token.Texto);
+                        break;
                 }
 
-                if (tk is Mathematics)
-                {
-                    sb.Append(tk.Texto);
-                }
+                builder.Append(" ");
 
-                if (tk is Logic)
-                {
-                    sb.Append(tk.Texto);
-                }
-
-                if (tk is Comparison)
-                {
-                    sb.Append(tk.Texto);
-                }
-
-                sb.Append(" ");
-
-                retorno = ValidarBooleano(sb.ToString());
+                validator = ValidateBoolean(builder.ToString());
             }
             
-            return retorno;
+            return validator;
         }
 
-        private bool ExecutarInstrucao(List<Token> Instrucao)
+        private void ExecuteInstruction(List<Token> instruction)
         {
-            bool retorno = true;
-
-            StringBuilder sb = new StringBuilder();
-            StringBuilder sbTexto = new StringBuilder();
-
-            foreach (Token tk in Instrucao)
+            StringBuilder builder = new StringBuilder();
+            StringBuilder builderText = new StringBuilder();
+            foreach (Token token in instruction)
             {
-                if (tk is Value)
+                switch (token)
                 {
-                    sb.Append(((Value) tk).ValorVariavel);
-                    sbTexto.Append(tk.Texto);
+                    case Value value:
+                        builder.Append(value.ValorVariavel);
+                        builderText.Append(value.Texto);
+                        break;
+                    case Mathematics _:
+                        builder.Append(token.Texto);
+                        builderText.Append(token.Texto);
+                        break;
+                    case Comparison _:
+                        builder.Append(token.Texto);
+                        builderText.Append(token.Texto);
+                        break;
                 }
 
-                if (tk is Mathematics)
-                {
-                    sb.Append(tk.Texto);
-                    sbTexto.Append(tk.Texto);
-                }
-
-                if (tk is Comparison)
-                {
-                    sb.Append(tk.Texto);
-                    sbTexto.Append(tk.Texto);
-                }
-
-                sb.Append(" ");
-                sbTexto.Append(" ");
+                builder.Append(" ");
+                builderText.Append(" ");
             }
 
-            retorno = ValidarBooleano(sb.ToString());
+            bool validator = ValidateBoolean(builder.ToString());
 
-            if (!retorno)
+            if (!validator)
             {
-                _mensagemerro.Add("Regra violada: " + sbTexto.ToString() + " (" + sb.ToString() + ")");
+                _errorMessages.Add($"Rule violated: {builderText} ({builder})");
             }
-
-            return retorno;
         }
 
-        private bool ValidarBooleano(string instrucao)
+        private bool ValidateBoolean(string instruction)
         {
-            instrucao = instrucao.Replace('"'.ToString(), "'");
-
+            instruction = instruction.Replace('"'.ToString(), "'");
             DataTable table = new DataTable();
-            table.Columns.Add("expression", string.Empty.GetType(), instrucao);
+            table.Columns.Add("expression", string.Empty.GetType(), instruction);
             DataRow row = table.NewRow();
             table.Rows.Add(row);
             return bool.Parse((string) row["expression"]);
