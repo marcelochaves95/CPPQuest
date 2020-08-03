@@ -1,6 +1,6 @@
 namespace Sesamo.Operators.Comparisons
 {
-    public class BiggerOrEqual : Comparison, IOperator
+    public class BiggerOrEqual : Comparison
     {
         private const string _chain = ">=";
         public override Chain Chain => new Chain(_chain);
