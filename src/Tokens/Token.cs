@@ -23,7 +23,7 @@ namespace Sesamo.Tokens
                 }
                 else
                 {
-                    _texto = ((Operator) this).Chain.Valor;
+                    _texto = ((Operator) this).Chain.Value;
                 }
 
                 return _texto;

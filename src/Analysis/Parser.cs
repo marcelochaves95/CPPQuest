@@ -37,32 +37,32 @@ namespace Sesamo.Analysis
             StringBuilder stringBuilder = new StringBuilder();
 
             stringBuilder.Append(@"(\");
-            stringBuilder.Append(new Equal().Chain.Valor);
+            stringBuilder.Append(new Equal().Chain.Value);
 
             stringBuilder.Append(@"|");
 
             stringBuilder.Append(@"\");
-            stringBuilder.Append(new Different().Chain.Valor);
+            stringBuilder.Append(new Different().Chain.Value);
 
             stringBuilder.Append(@"|");
 
             stringBuilder.Append(@"\");
-            stringBuilder.Append(new Bigger().Chain.Valor);
+            stringBuilder.Append(new Bigger().Chain.Value);
 
             stringBuilder.Append(@"|");
 
             stringBuilder.Append(@"\");
-            stringBuilder.Append(new Less().Chain.Valor);
+            stringBuilder.Append(new Less().Chain.Value);
 
             stringBuilder.Append(@"|");
 
             stringBuilder.Append(@"\");
-            stringBuilder.Append(new BiggerOrEqual().Chain.Valor);
+            stringBuilder.Append(new BiggerOrEqual().Chain.Value);
 
             stringBuilder.Append(@"|");
 
             stringBuilder.Append(@"\");
-            stringBuilder.Append(new LessOrEqual().Chain.Valor);
+            stringBuilder.Append(new LessOrEqual().Chain.Value);
 
             stringBuilder.Append(@")");
 
@@ -75,11 +75,11 @@ namespace Sesamo.Analysis
 
             stringBuilder.Append(@"(");
 
-            stringBuilder.Append(new And().Chain.Valor);
+            stringBuilder.Append(new And().Chain.Value);
 
             stringBuilder.Append(@"|");
 
-            stringBuilder.Append(new Or().Chain.Valor);
+            stringBuilder.Append(new Or().Chain.Value);
 
             stringBuilder.Append(@")");
 
@@ -100,22 +100,22 @@ namespace Sesamo.Analysis
             }
 
             stringBuilder.Append(@"\");
-            stringBuilder.Append(new Addition().Chain.Valor);
+            stringBuilder.Append(new Addition().Chain.Value);
 
             stringBuilder.Append(@"|");
 
             stringBuilder.Append(@"\");
-            stringBuilder.Append(new Subtraction().Chain.Valor);
+            stringBuilder.Append(new Subtraction().Chain.Value);
 
             stringBuilder.Append(@"|");
 
             stringBuilder.Append(@"\");
-            stringBuilder.Append(new Multiplication().Chain.Valor);
+            stringBuilder.Append(new Multiplication().Chain.Value);
 
             stringBuilder.Append(@"|");
 
             stringBuilder.Append(@"\");
-            stringBuilder.Append(new Less().Chain.Valor);
+            stringBuilder.Append(new Less().Chain.Value);
 
             if (withEndSpace)
             {
@@ -276,7 +276,7 @@ namespace Sesamo.Analysis
 
                 if (token is Logic logic  && !insideIf)
                 {
-                    _errorMessage = $"Syntax error: Logical operator {logic.Chain.Valor} outside conditional operator on line: {line}.";
+                    _errorMessage = $"Syntax error: Logical operator {logic.Chain.Value} outside conditional operator on line: {line}.";
                     validator = false;
                     break;
                 }
@@ -285,19 +285,19 @@ namespace Sesamo.Analysis
                 {
                     if (token is If @if)
                     {
-                        contentIf += @if.Chain.Valor;
+                        contentIf += @if.Chain.Value;
                     }
                     else if (token is Comparison comparison)
                     {
-                        contentIf += comparison.Chain.Valor;
+                        contentIf += comparison.Chain.Value;
                     }
                     else if (token is Mathematics mathematics)
                     {
-                        contentIf += mathematics.Chain.Valor;
+                        contentIf += mathematics.Chain.Value;
                     }
                     else if (token is Logic logic1)
                     {
-                        contentIf += logic1.Chain.Valor;
+                        contentIf += logic1.Chain.Value;
                     }
                     else if (token is Value value1)
                     {
@@ -312,7 +312,7 @@ namespace Sesamo.Analysis
                     }
                     else
                     {
-                        _errorMessage = $"Syntax error: Conditional Operator {new If().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                        _errorMessage = $"Syntax error: Conditional Operator {new If().Chain.Value} with unrecognized symbol, identified in line: {line}.";
                         validator = false;
                         break;
                     }
@@ -323,7 +323,7 @@ namespace Sesamo.Analysis
                 {
                     if (contentIf != "")
                     {
-                        contentIf += new Else().Chain.Valor;
+                        contentIf += new Else().Chain.Value;
                         string ER = GetIfThenRegularExpression();
                         Match match = Regex.Match(contentIf, ER);
 
@@ -333,7 +333,7 @@ namespace Sesamo.Analysis
                         }
                         else
                         {
-                            _errorMessage = $"Syntax error: Conditional Operator {new If().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                            _errorMessage = $"Syntax error: Conditional Operator {new If().Chain.Value} with unrecognized symbol, identified in line: {line}.";
                             validator = false;
                             break;
                         }
@@ -342,15 +342,15 @@ namespace Sesamo.Analysis
                     {
                         if (token is Comparison comparison)
                         {
-                            contentThenPerLine += comparison.Chain.Valor;
+                            contentThenPerLine += comparison.Chain.Value;
                         }
                         else if (token is Mathematics mathematics)
                         {
-                            contentThenPerLine += mathematics.Chain.Valor;
+                            contentThenPerLine += mathematics.Chain.Value;
                         }
                         else if (token is Logic logic1)
                         {
-                            contentThenPerLine += logic1.Chain.Valor;
+                            contentThenPerLine += logic1.Chain.Value;
                         }
                         else if (token is Value value1)
                         {
@@ -365,7 +365,7 @@ namespace Sesamo.Analysis
                         }
                         else
                         {
-                            _errorMessage = $"Syntax error: Conditional Operator {new Then().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                            _errorMessage = $"Syntax error: Conditional Operator {new Then().Chain.Value} with unrecognized symbol, identified in line: {line}.";
                             validator = false;
                             break;
                         }
@@ -384,7 +384,7 @@ namespace Sesamo.Analysis
                             }
                             else
                             {
-                                _errorMessage = $"Syntax error: Conditional Operator {new Then().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                                _errorMessage = $"Syntax error: Conditional Operator {new Then().Chain.Value} with unrecognized symbol, identified in line: {line}.";
                                 validator = false;
                                 break;
                             }
@@ -400,15 +400,15 @@ namespace Sesamo.Analysis
                 {
                     if (token is Comparison comparison)
                     {
-                        contentElsePerLine += comparison.Chain.Valor;
+                        contentElsePerLine += comparison.Chain.Value;
                     }
                     else if (token is Mathematics mathematics)
                     {
-                        contentElsePerLine += mathematics.Chain.Valor;
+                        contentElsePerLine += mathematics.Chain.Value;
                     }
                     else if (token is Logic logic1)
                     {
-                        contentElsePerLine += logic1.Chain.Valor;
+                        contentElsePerLine += logic1.Chain.Value;
                     }
                     else if (token is Value value1)
                     {
@@ -423,7 +423,7 @@ namespace Sesamo.Analysis
                     }
                     else if (!(token is Else))
                     {
-                        _errorMessage = $"Syntax error: Conditional Operator {new Else().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                        _errorMessage = $"Syntax error: Conditional Operator {new Else().Chain.Value} with unrecognized symbol, identified in line: {line}.";
                         validator = false;
                         break;
                     }
@@ -443,7 +443,7 @@ namespace Sesamo.Analysis
                                 }
                                 else
                                 {
-                                    _errorMessage = $"Syntax error: Conditional Operator {new Else().Chain.Valor} with unrecognized symbol, identified in line: {line}.";
+                                    _errorMessage = $"Syntax error: Conditional Operator {new Else().Chain.Value} with unrecognized symbol, identified in line: {line}.";
                                     validator = false;
                                     break;
                                 }
@@ -460,7 +460,7 @@ namespace Sesamo.Analysis
                 {
                     if (contentIf != "")
                     {
-                        _errorMessage = $"Syntax error: Conditional Operator {new If().Chain.Valor} without closing the {new Then().Chain.Valor} operator identified in line: {line}.";
+                        _errorMessage = $"Syntax error: Conditional Operator {new If().Chain.Value} without closing the {new Then().Chain.Value} operator identified in line: {line}.";
                         validator = false;
                         break;
                     }

@@ -122,67 +122,67 @@ namespace Sesamo.Analysis
                         valueVariable.Linha = line;
                         SourceCode.Add(valueVariable);
                     }
-                    else if (new If().Chain.Valor == value)
+                    else if (new If().Chain.Value == value)
                     {
                         SourceCode.Add(new If(line));
                     }
-                    else if (new Then().Chain.Valor == value)
+                    else if (new Then().Chain.Value == value)
                     {
                         SourceCode.Add(new Then(line));
                     }
-                    else if (new Else().Chain.Valor == value)
+                    else if (new Else().Chain.Value == value)
                     {
                         SourceCode.Add(new Else(line));
                     }
-                    else if (new EndIf().Chain.Valor == value)
+                    else if (new EndIf().Chain.Value == value)
                     {
                         SourceCode.Add(new EndIf(line));
                     }
-                    else if (new Equal().Chain.Valor == value)
+                    else if (new Equal().Chain.Value == value)
                     {
                         SourceCode.Add(new Equal(line));
                     }
-                    else if (new Different().Chain.Valor == value)
+                    else if (new Different().Chain.Value == value)
                     {
                         SourceCode.Add(new Different(line));
                     }
-                    else if (new Bigger().Chain.Valor == value)
+                    else if (new Bigger().Chain.Value == value)
                     {
                         SourceCode.Add(new Bigger(line));
                     }
-                    else if (new Less().Chain.Valor == value)
+                    else if (new Less().Chain.Value == value)
                     {
                         SourceCode.Add(new Less(line));
                     }
-                    else if (new BiggerOrEqual().Chain.Valor == value)
+                    else if (new BiggerOrEqual().Chain.Value == value)
                     {
                         SourceCode.Add(new BiggerOrEqual(line));
                     }
-                    else if (new LessOrEqual().Chain.Valor == value)
+                    else if (new LessOrEqual().Chain.Value == value)
                     {
                         SourceCode.Add(new LessOrEqual(line));
                     }
-                    else if (new Addition().Chain.Valor == value)
+                    else if (new Addition().Chain.Value == value)
                     {
                         SourceCode.Add(new Addition(line));
                     }
-                    else if (new Subtraction().Chain.Valor == value)
+                    else if (new Subtraction().Chain.Value == value)
                     {
                         SourceCode.Add(new Subtraction(line));
                     }
-                    else if (new Multiplication().Chain.Valor == value)
+                    else if (new Multiplication().Chain.Value == value)
                     {
                         SourceCode.Add(new Multiplication(line));
                     }
-                    else if (new Division().Chain.Valor == value)
+                    else if (new Division().Chain.Value == value)
                     {
                         SourceCode.Add(new Division(line));
                     }
-                    else if (new Or().Chain.Valor == value)
+                    else if (new Or().Chain.Value == value)
                     {
                         SourceCode.Add(new Or(line));
                     }
-                    else if (new And().Chain.Valor == value)
+                    else if (new And().Chain.Value == value)
                     {
                         SourceCode.Add(new And(line));
                     }

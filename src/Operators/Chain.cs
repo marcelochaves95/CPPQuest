@@ -2,17 +2,16 @@ namespace Sesamo.Operators
 {
     public class Chain
     {
-        private string valor_retorno;
+        private string _value;
+        public string Value
+        {
+            get => _value;
+            set => _value = value;
+        }
 
         public Chain(string valor)
         {
-            valor_retorno = valor;
-        }
-
-        public string Valor
-        {
-            get { return valor_retorno; }
-            set { valor_retorno = value; }
+            _value = valor;
         }
     }
 }
