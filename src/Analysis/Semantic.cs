@@ -35,32 +35,32 @@ namespace Sesamo.Analysis
             foreach (IntermediateExpression code in _intermediate.Code)
             {
                 DataRow dataRow = dataTable.NewRow();
-                StringBuilder exp = new StringBuilder();
+                StringBuilder builder = new StringBuilder();
 
                 foreach (Token token in code.Condition)
                 {
-                    exp.Append(token.Text);
-                    exp.Append(" ");
+                    builder.Append(token.Text);
+                    builder.Append(" ");
                 }
-                dataRow["Condition"] = exp.ToString();
+                dataRow["Condition"] = builder.ToString();
 
-                exp = new StringBuilder();
+                builder = new StringBuilder();
 
                 foreach (Token token in code.Expression)
                 {
-                    exp.Append(token.Text);
-                    exp.Append(" ");
+                    builder.Append(token.Text);
+                    builder.Append(" ");
                 }
-                dataRow["Expression"] = exp.ToString();
+                dataRow["Expression"] = builder.ToString();
 
-                exp = new StringBuilder();
+                builder = new StringBuilder();
 
                 foreach (Token token in code.UnmetConditionExpression)
                 {
-                    exp.Append(token.Text);
-                    exp.Append(" ");
+                    builder.Append(token.Text);
+                    builder.Append(" ");
                 }
-                dataRow["ExpressionConditionNotMet"] = exp.ToString();
+                dataRow["ExpressionConditionNotMet"] = builder.ToString();
                 dataTable.Rows.Add(dataRow);
             }
 

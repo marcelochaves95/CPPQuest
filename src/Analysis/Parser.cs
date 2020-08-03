@@ -34,139 +34,139 @@ namespace Sesamo.Analysis
 
         private string GetOperatorsComparisonRegularExpression()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
 
-            stringBuilder.Append(@"(\");
-            stringBuilder.Append(new Equal().Chain.Value);
+            builder.Append(@"(\");
+            builder.Append(new Equal().Chain.Value);
 
-            stringBuilder.Append(@"|");
+            builder.Append(@"|");
 
-            stringBuilder.Append(@"\");
-            stringBuilder.Append(new Different().Chain.Value);
+            builder.Append(@"\");
+            builder.Append(new Different().Chain.Value);
 
-            stringBuilder.Append(@"|");
+            builder.Append(@"|");
 
-            stringBuilder.Append(@"\");
-            stringBuilder.Append(new Bigger().Chain.Value);
+            builder.Append(@"\");
+            builder.Append(new Bigger().Chain.Value);
 
-            stringBuilder.Append(@"|");
+            builder.Append(@"|");
 
-            stringBuilder.Append(@"\");
-            stringBuilder.Append(new Less().Chain.Value);
+            builder.Append(@"\");
+            builder.Append(new Less().Chain.Value);
 
-            stringBuilder.Append(@"|");
+            builder.Append(@"|");
 
-            stringBuilder.Append(@"\");
-            stringBuilder.Append(new BiggerOrEqual().Chain.Value);
+            builder.Append(@"\");
+            builder.Append(new BiggerOrEqual().Chain.Value);
 
-            stringBuilder.Append(@"|");
+            builder.Append(@"|");
 
-            stringBuilder.Append(@"\");
-            stringBuilder.Append(new LessOrEqual().Chain.Value);
+            builder.Append(@"\");
+            builder.Append(new LessOrEqual().Chain.Value);
 
-            stringBuilder.Append(@")");
+            builder.Append(@")");
 
-            return stringBuilder.ToString();
+            return builder.ToString();
         }
 
         private string GetOperatorsLogicalRegularExpression()
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
 
-            stringBuilder.Append(@"(");
+            builder.Append(@"(");
 
-            stringBuilder.Append(new And().Chain.Value);
+            builder.Append(new And().Chain.Value);
 
-            stringBuilder.Append(@"|");
+            builder.Append(@"|");
 
-            stringBuilder.Append(new Or().Chain.Value);
+            builder.Append(new Or().Chain.Value);
 
-            stringBuilder.Append(@")");
+            builder.Append(@")");
 
-            return stringBuilder.ToString();
+            return builder.ToString();
         }
         
         private string GetOperatorsMathematicalRegularExpression(bool withEndSpace)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
 
             if (withEndSpace)
             {
-                stringBuilder.Append(@"((");
+                builder.Append(@"((");
             }
             else
             {
-                stringBuilder.Append(@"(\s(");
+                builder.Append(@"(\s(");
             }
 
-            stringBuilder.Append(@"\");
-            stringBuilder.Append(new Addition().Chain.Value);
+            builder.Append(@"\");
+            builder.Append(new Addition().Chain.Value);
 
-            stringBuilder.Append(@"|");
+            builder.Append(@"|");
 
-            stringBuilder.Append(@"\");
-            stringBuilder.Append(new Subtraction().Chain.Value);
+            builder.Append(@"\");
+            builder.Append(new Subtraction().Chain.Value);
 
-            stringBuilder.Append(@"|");
+            builder.Append(@"|");
 
-            stringBuilder.Append(@"\");
-            stringBuilder.Append(new Multiplication().Chain.Value);
+            builder.Append(@"\");
+            builder.Append(new Multiplication().Chain.Value);
 
-            stringBuilder.Append(@"|");
+            builder.Append(@"|");
 
-            stringBuilder.Append(@"\");
-            stringBuilder.Append(new Less().Chain.Value);
+            builder.Append(@"\");
+            builder.Append(new Less().Chain.Value);
 
             if (withEndSpace)
             {
-                stringBuilder.Append(@")\s\w+" + GetAllowsVariablePointRegularExpression() + @"\s)*");
+                builder.Append(@")\s\w+" + GetAllowsVariablePointRegularExpression() + @"\s)*");
             }
             else
             {
-                stringBuilder.Append(@")\s\w+" + GetAllowsVariablePointRegularExpression() + @"\)*");
+                builder.Append(@")\s\w+" + GetAllowsVariablePointRegularExpression() + @"\)*");
             }
 
-            return stringBuilder.ToString();
+            return builder.ToString();
         }
 
         private string GetExpressionsRegularExpression()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
             string mathematical = GetOperatorsMathematicalRegularExpression(true);
             string mathematicalWithEndSpace = GetOperatorsMathematicalRegularExpression(false);
             string comparison = GetOperatorsComparisonRegularExpression();
 
-            sb.Append(@"^" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
-            sb.Append(mathematical);
-            sb.Append(comparison);
-            sb.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"");
-            sb.Append(mathematicalWithEndSpace);
-            sb.Append(@"$");
+            builder.Append(@"^" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
+            builder.Append(mathematical);
+            builder.Append(comparison);
+            builder.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"");
+            builder.Append(mathematicalWithEndSpace);
+            builder.Append(@"$");
 
-            return sb.ToString();
+            return builder.ToString();
         }
 
         private string GetIfThenRegularExpression()
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
             string comparison = GetOperatorsComparisonRegularExpression();
             string logical = GetOperatorsLogicalRegularExpression();
             string mathematical = GetOperatorsMathematicalRegularExpression(true);
 
-            sb.Append(@"if\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
-            sb.Append(mathematical);
-            sb.Append(comparison);
-            sb.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s(");
-            sb.Append(mathematical);
-            sb.Append(logical);
-            sb.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
-            sb.Append(mathematical);
-            sb.Append(comparison);
-            sb.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
-            sb.Append(mathematical);
-            sb.Append(@")*then");
+            builder.Append(@"if\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
+            builder.Append(mathematical);
+            builder.Append(comparison);
+            builder.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s(");
+            builder.Append(mathematical);
+            builder.Append(logical);
+            builder.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
+            builder.Append(mathematical);
+            builder.Append(comparison);
+            builder.Append(@"+\s" + GetChainRegularExpression() + GetAllowsVariablePointRegularExpression() + @"\s");
+            builder.Append(mathematical);
+            builder.Append(@")*then");
 
-            return sb.ToString();
+            return builder.ToString();
         }
 
         public bool Validate(Lexical lexicalAnalysis)
