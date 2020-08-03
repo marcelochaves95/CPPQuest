@@ -97,9 +97,9 @@ namespace Sesamo.Analysis
                 {
                     if (token is Bigger || token is Less || token is BiggerOrEqual || token is LessOrEqual)
                     {
-                        if ((previousToken as Value).Tipo != Types.Decimal && (previousToken as Value).Tipo != Types.Hexadecimal && (previousToken as Value).Tipo != Types.Binary)
+                        if ((previousToken as Value).Type != Types.Decimal && (previousToken as Value).Type != Types.Hexadecimal && (previousToken as Value).Type != Types.Binary)
                         {
-                            string valueName = (previousToken as Value).NomeVariavel == "" ? (previousToken as Value).ValorVariavel : (previousToken as Value).NomeVariavel;
+                            string valueName = (previousToken as Value).VariableName == "" ? (previousToken as Value).VariableValue : (previousToken as Value).VariableName;
                             _errorMessage = $"The {valueName} value types cannot be compared on the line: {line}.";
                             validator = false;
                             break;
@@ -107,7 +107,7 @@ namespace Sesamo.Analysis
                     }
                     else
                     {
-                        _errorMessage = $"It's not possible to perform arithmetic operation with values of type {(token as Value).Tipo}. Line error: {line}.";
+                        _errorMessage = $"It's not possible to perform arithmetic operation with values of type {(token as Value).Type}. Line error: {line}.";
                         validator = false;
                         break;
                     }
@@ -115,9 +115,9 @@ namespace Sesamo.Analysis
 
                 if (token is Comparison)
                 {
-                    if ((previousToken as Value).Tipo != Types.Decimal || (previousToken as Value).Tipo != Types.Hexadecimal || (previousToken as Value).Tipo != Types.Binary)
+                    if ((previousToken as Value).Type != Types.Decimal || (previousToken as Value).Type != Types.Hexadecimal || (previousToken as Value).Type != Types.Binary)
                     {
-                        if ((previousToken as Value).Tipo != (nextToken as Value).Tipo)
+                        if ((previousToken as Value).Type != (nextToken as Value).Type)
                         {
                             _errorMessage = $"The value types must be the same when comparing on the line: {line}.";
                             validator = false;
@@ -127,7 +127,7 @@ namespace Sesamo.Analysis
                         {
                             if (!(token is Equal))
                             {
-                                _errorMessage = $"It is not possible to perform a numerical comparison with values of type {(previousToken as Value).Tipo} and {((Value) nextToken).Tipo}. Line error: {line}.";
+                                _errorMessage = $"It is not possible to perform a numerical comparison with values of type {(previousToken as Value).Type} and {((Value) nextToken).Type}. Line error: {line}.";
                                 validator = false;
                                 break;
                             }

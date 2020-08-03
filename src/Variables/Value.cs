@@ -4,46 +4,49 @@ namespace Sesamo.Variables
 {
     public class Value : Token
     {
-        public Value(string Nome, string Valor, string TipoValor)
+        private string _variableName;
+        public string VariableName
         {
-            this._nomeVariavel = Nome;
-            this._valorVariavel = Valor;
-            this._tipo = TipoValor;
+            get => _variableName;
+            set => _variableName = value;
         }
 
-        public Value(string Valor, string TipoValor, int numeroLine)
+        private string _variableValue;
+        public string VariableValue
         {
-            this._valorVariavel = Valor;
-            this._tipo = TipoValor;
-            this.Line = numeroLine;
+            get => _variableValue;
+            set => _variableValue = value;
         }
 
-        private string _nomeVariavel;
-        public string NomeVariavel
+        private string _type;
+        public string Type
         {
-            get { return _nomeVariavel; }
-            set { _nomeVariavel = value; }
+            get => _type;
+            set => _type = value;
         }
 
-        private string _valorVariavel;
-        public string ValorVariavel
+        public Value(string variableName, string variableValue, string typeValue)
         {
-            get { return _valorVariavel; }
-            set { _valorVariavel = value; }
+            _variableName = variableName;
+            _variableValue = variableValue;
+            _type = typeValue;
         }
 
-        private string _tipo;
-        public string Tipo
+        public Value(string variableValue, string typeValue, int lineNumber)
         {
-            get { return _tipo; }
-            set { _tipo = value; }
+            _variableValue = variableValue;
+            _type = typeValue;
+            Line = lineNumber;
         }
 
-        public Value Copia()
+        public Value Copy()
         {
-            Value vCopia = new Value(this.ValorVariavel, this.Tipo, this.Line);
-            vCopia.NomeVariavel = this.NomeVariavel;
-            return vCopia;
+            Value copy = new Value(VariableValue, Type, Line)
+            {
+                VariableName = VariableName
+            };
+
+            return copy;
         }
     }
 }

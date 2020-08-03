@@ -61,7 +61,7 @@ namespace Sesamo.Compilations
                 switch (token)
                 {
                     case Value value:
-                        builder.Append(value.ValorVariavel);
+                        builder.Append(value.VariableValue);
                         break;
                     case Mathematics _:
                     case Logic _:
@@ -87,7 +87,7 @@ namespace Sesamo.Compilations
                 switch (token)
                 {
                     case Value value:
-                        builder.Append(value.ValorVariavel);
+                        builder.Append(value.VariableValue);
                         builderText.Append(value.Text);
                         break;
                     case Mathematics _:

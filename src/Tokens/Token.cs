@@ -19,7 +19,7 @@ namespace Sesamo.Tokens
             {
                 if (this is Value)
                 {
-                    _text = (this as Value)?.NomeVariavel != null ? (this as Value)?.NomeVariavel : (this as Value)?.ValorVariavel;
+                    _text = (this as Value)?.VariableName != null ? (this as Value)?.VariableName : (this as Value)?.VariableValue;
                 }
                 else
                 {

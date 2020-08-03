@@ -218,7 +218,7 @@ namespace Sesamo.Analysis
                     }
                     else
                     {
-                        _errorMessage = $"Syntax error: {value.NomeVariavel} symbol used incorrectly on the line: {line}.";
+                        _errorMessage = $"Syntax error: {value.VariableName} symbol used incorrectly on the line: {line}.";
                         validator = false;
                         break;
                     }
@@ -301,13 +301,13 @@ namespace Sesamo.Analysis
                     }
                     else if (token is Value value1)
                     {
-                        if (value1.NomeVariavel != null)
+                        if (value1.VariableName != null)
                         {
-                            contentIf += value1.NomeVariavel;
+                            contentIf += value1.VariableName;
                         }
                         else
                         {
-                            contentIf += value1.ValorVariavel;
+                            contentIf += value1.VariableValue;
                         }
                     }
                     else
@@ -354,13 +354,13 @@ namespace Sesamo.Analysis
                         }
                         else if (token is Value value1)
                         {
-                            if (value1.NomeVariavel != null)
+                            if (value1.VariableName != null)
                             {
-                                contentThenPerLine += value1.NomeVariavel;
+                                contentThenPerLine += value1.VariableName;
                             }
                             else
                             {
-                                contentThenPerLine += value1.ValorVariavel;
+                                contentThenPerLine += value1.VariableValue;
                             }
                         }
                         else
@@ -412,13 +412,13 @@ namespace Sesamo.Analysis
                     }
                     else if (token is Value value1)
                     {
-                        if (value1.NomeVariavel != null)
+                        if (value1.VariableName != null)
                         {
-                            contentElsePerLine += value1.NomeVariavel;
+                            contentElsePerLine += value1.VariableName;
                         }
                         else
                         {
-                            contentElsePerLine += value1.ValorVariavel;
+                            contentElsePerLine += value1.VariableValue;
                         }
                     }
                     else if (!(token is Else))

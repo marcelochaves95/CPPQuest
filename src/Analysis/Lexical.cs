@@ -118,7 +118,7 @@ namespace Sesamo.Analysis
                     }
                     else if (variable.ExisteVariavel(value))
                     {
-                        Value valueVariable = variable.getVariavel(value).Copia();
+                        Value valueVariable = variable.getVariavel(value).Copy();
                         valueVariable.Line = line;
                         SourceCode.Add(valueVariable);
                     }

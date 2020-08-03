@@ -15,7 +15,7 @@ namespace Sesamo.Variables
             Value retorno = null;
             foreach (Value var in _listaVariaveis)
             {
-                if (var.NomeVariavel == Nome)
+                if (var.VariableName == Nome)
                 {
                     retorno = var;
                     break;
@@ -44,7 +44,7 @@ namespace Sesamo.Variables
 
             foreach (Value var in _listaVariaveis)
             {
-                if (var.NomeVariavel == Variavel.NomeVariavel)
+                if (var.VariableName == Variavel.VariableName)
                 {
                     retorno = true;
                     break;
