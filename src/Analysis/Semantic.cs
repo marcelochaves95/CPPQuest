@@ -97,7 +97,7 @@ namespace Sesamo.Analysis
                 {
                     if (token is Bigger || token is Less || token is BiggerOrEqual || token is LessOrEqual)
                     {
-                        if ((previousToken as Value).Tipo != Types.Dec && (previousToken as Value).Tipo != Types.Hex && (previousToken as Value).Tipo != Types.Bin)
+                        if ((previousToken as Value).Tipo != Types.Decimal && (previousToken as Value).Tipo != Types.Hexadecimal && (previousToken as Value).Tipo != Types.Binary)
                         {
                             string valueName = (previousToken as Value).NomeVariavel == "" ? (previousToken as Value).ValorVariavel : (previousToken as Value).NomeVariavel;
                             _errorMessage = $"The {valueName} value types cannot be compared on the line: {line}.";
@@ -115,7 +115,7 @@ namespace Sesamo.Analysis
 
                 if (token is Comparison)
                 {
-                    if ((previousToken as Value).Tipo != Types.Dec || (previousToken as Value).Tipo != Types.Hex || (previousToken as Value).Tipo != Types.Bin)
+                    if ((previousToken as Value).Tipo != Types.Decimal || (previousToken as Value).Tipo != Types.Hexadecimal || (previousToken as Value).Tipo != Types.Binary)
                     {
                         if ((previousToken as Value).Tipo != (nextToken as Value).Tipo)
                         {

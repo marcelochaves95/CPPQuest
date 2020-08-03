@@ -110,11 +110,11 @@ namespace Sesamo.Analysis
                     variable = new Variable(variables);
                     if (value[0] == '"')
                     {
-                        SourceCode.Add(new Value(value, Types.Txt, line));
+                        SourceCode.Add(new Value(value, Types.Text, line));
                     }
                     else if (Int64.TryParse(value, out long convertedNumber))
                     {
-                        SourceCode.Add(new Value(convertedNumber.ToString(), Types.Dec, line));
+                        SourceCode.Add(new Value(convertedNumber.ToString(), Types.Decimal, line));
                     }
                     else if (variable.ExisteVariavel(value))
                     {
