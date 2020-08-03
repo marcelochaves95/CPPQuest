@@ -2,23 +2,16 @@ namespace Sesamo.Operators.Mathematical
 {
     public class Multiplication : Mathematics, IOperator
     {
-        #region IOperador Members
-
-        private string _cadeia = "*";
-        public override Chain Chain
-        {
-            get { return new Chain(_cadeia); }
-        }
-
-        #endregion
+        private const string _chain = "*";
+        public override Chain Chain => new Chain(_chain);
 
         public Multiplication()
         {
         }
 
-        public Multiplication(int NumeroLinha)
+        public Multiplication(int lineNumber)
         {
-            this.Linha = NumeroLinha;
+            Linha = lineNumber;
         }
     }
 }
