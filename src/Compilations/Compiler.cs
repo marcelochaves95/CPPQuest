@@ -29,26 +29,26 @@ namespace Sesamo.Compilations
 
         private void ExecuteExpression(IntermediateExpression expression)
         {
-            if (expression.Condicao.Count > 0)
+            if (expression.Condition.Count > 0)
             {
-                if (IsConditionExpressionValid(expression.Condicao))
+                if (IsConditionExpressionValid(expression.Condition))
                 {
-                    if (expression.Expressao.Count > 0)
+                    if (expression.Expression.Count > 0)
                     {
-                        ExecuteInstruction(expression.Expressao);
+                        ExecuteInstruction(expression.Expression);
                     }
                 }
                 else
                 {
-                    if (expression.ExpressaoCondicaoNaoAtendida.Count > 0)
+                    if (expression.UnmetConditionExpression.Count > 0)
                     {
-                        ExecuteInstruction(expression.ExpressaoCondicaoNaoAtendida);
+                        ExecuteInstruction(expression.UnmetConditionExpression);
                     }
                 }
             }
             else
             {
-                ExecuteInstruction(expression.Expressao);
+                ExecuteInstruction(expression.Expression);
             }
         }
 

@@ -5,90 +5,56 @@ namespace Sesamo.Intermediaries
 {
     public class IntermediateExpression
     {
-        private List<Token> _expressao = new List<Token>();
-        public List<Token> Expressao
+        private readonly List<Token> _expression = new List<Token>();
+        public List<Token> Expression => _expression;
+
+        private List<Token> _condition = new List<Token>();
+        public List<Token> Condition
         {
-            get
-            {
-                return _expressao;
-            }
+            get => _condition;
+            set => _condition = value;
         }
 
-        private List<Token> _condicao = new List<Token>();
-        public List<Token> Condicao
-        {
-            get
-            {
-                return _condicao;
-            }
-            set
-            {
-                _condicao = value;
-            }
-        }
+        private readonly List<Token> _unmetConditionExpression = new List<Token>();
+        public List<Token> UnmetConditionExpression => _unmetConditionExpression;
 
-        private List<Token> _expressaocondicaonaoatendida = new List<Token>();
-        public List<Token> ExpressaoCondicaoNaoAtendida
-        {
-            get
-            {
-                return _expressaocondicaonaoatendida;
-            }
-        }
-
-        public bool ExpressaoSobCondicao
-        {
-            get
-            {
-                bool retorno;
-                if (_condicao.Count > 0)
-                {
-                    retorno = true;
-                }
-                else
-                {
-                    retorno = false;
-                }
-
-                return retorno;
-            }
-        }
+        public bool ExpressionUnderCondition => _condition.Count > 0;
 
         public IntermediateExpression()
         {
-
         }
 
-        public IntermediateExpression(List<Token> expressao, List<Token> expressaocondicaonaoatendida, List<Token>condicao)
+        public IntermediateExpression(List<Token> expression, List<Token> unmetConditionExpression, List<Token>condition)
         {
-            this._expressao = expressao;
-            this._expressaocondicaonaoatendida = expressaocondicaonaoatendida;
-            this._condicao = condicao;
+            _expression = expression;
+            _unmetConditionExpression = unmetConditionExpression;
+            _condition = condition;
         }
 
-        public void AdicionarTokenEmExpressao(Token tk)
+        public void AddTokenInExpression(Token token)
         {
-            _expressao.Add(tk);
+            _expression.Add(token);
         }
 
-        public void AdicionarTokenEmCondicao(Token tk)
+        public void AddTokenInCondition(Token token)
         {
-            _condicao.Add(tk);
+            _condition.Add(token);
         }
 
-        public void AdicionarTokenEmExpressaoCondicaoNaoAtendida(Token tk)
+        public void AddTokenInUnmetConditionExpression(Token token)
         {
-            _expressaocondicaonaoatendida.Add(tk);
+            _unmetConditionExpression.Add(token);
         }
 
-        public List<Token> getCopiaCondicao()
+        public List<Token> GetConditionCopy()
         {
-            List<Token> retorno = new List<Token>();
-            foreach(Token tk in Condicao)
+            List<Token> conditions = new List<Token>();
+            foreach (Token token in Condition)
             {
-                retorno.Add(tk);
+                conditions.Add(token);
             }
-            return retorno;
+
+            return conditions;
         }
     }
 }

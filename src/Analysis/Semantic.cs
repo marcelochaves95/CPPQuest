@@ -37,7 +37,7 @@ namespace Sesamo.Analysis
                 DataRow dataRow = dataTable.NewRow();
                 StringBuilder exp = new StringBuilder();
 
-                foreach (Token token in code.Condicao)
+                foreach (Token token in code.Condition)
                 {
                     exp.Append(token.Texto);
                     exp.Append(" ");
@@ -46,7 +46,7 @@ namespace Sesamo.Analysis
 
                 exp = new StringBuilder();
 
-                foreach (Token token in code.Expressao)
+                foreach (Token token in code.Expression)
                 {
                     exp.Append(token.Texto);
                     exp.Append(" ");
@@ -55,7 +55,7 @@ namespace Sesamo.Analysis
 
                 exp = new StringBuilder();
 
-                foreach (Token token in code.ExpressaoCondicaoNaoAtendida)
+                foreach (Token token in code.UnmetConditionExpression)
                 {
                     exp.Append(token.Texto);
                     exp.Append(" ");
@@ -139,22 +139,22 @@ namespace Sesamo.Analysis
                 {
                     if (previousToken.Linha != token.Linha)
                     {
-                        if (expression.Expressao.Count > 0 || expression.ExpressaoCondicaoNaoAtendida.Count > 0)
+                        if (expression.Expression.Count > 0 || expression.UnmetConditionExpression.Count > 0)
                         {
                             _intermediate.AddExpression(expression);
 
                             IntermediateExpression expressionTemp = new IntermediateExpression();
                             if ((insideThen || insideElse) && !(token is EndIf))
                             {
-                                expressionTemp.Condicao = expression.getCopiaCondicao();
+                                expressionTemp.Condition = expression.GetConditionCopy();
                             }
 
                             expression = expressionTemp;
                         }
 
-                        if (token is EndIf && expression.Condicao.Count > 0)
+                        if (token is EndIf && expression.Condition.Count > 0)
                         {
-                            expression.Condicao = new List<Token>();
+                            expression.Condition = new List<Token>();
                         }
                     }
                 }
@@ -185,23 +185,23 @@ namespace Sesamo.Analysis
 
                 if (insideIf)
                 {
-                    expression.AdicionarTokenEmCondicao(token);
+                    expression.AddTokenInCondition(token);
                 }
                 else if (insideThen)
                 {
-                    expression.AdicionarTokenEmExpressao(token);
+                    expression.AddTokenInExpression(token);
                 }
                 else if (insideElse)
                 {
-                    expression.AdicionarTokenEmExpressaoCondicaoNaoAtendida(token);
+                    expression.AddTokenInUnmetConditionExpression(token);
                 }
                 else
                 {
-                    expression.AdicionarTokenEmExpressao(token);
+                    expression.AddTokenInExpression(token);
                 }
             }
 
-            if (expression.Expressao.Count > 0 || expression.ExpressaoCondicaoNaoAtendida.Count > 0)
+            if (expression.Expression.Count > 0 || expression.UnmetConditionExpression.Count > 0)
             {
                 _intermediate.AddExpression(expression);
             }
