@@ -4,64 +4,53 @@ namespace Sesamo.Variables
 {
     public class Variable
     {
-        public Variable(List<Value> Variaveis)
+        private List<Value> _variables;
+        public List<Value> Variables => _variables;
+
+        public Variable(List<Value> variables)
         {
-            //CARREGA A LISTA DE VARIAVEIS
-            this._listaVariaveis = Variaveis;
+            _variables = variables;
         }
 
-        public Value getVariavel(string Nome)
+        public Value GetVariable(string name)
         {
-            Value retorno = null;
-            foreach (Value var in _listaVariaveis)
+            Value value = null;
+            foreach (Value variable in _variables)
             {
-                if (var.VariableName == Nome)
+                if (variable.VariableName == name)
                 {
-                    retorno = var;
-                    break;
-                }
-            }
-            return retorno;
-        }
-
-        private List<Value> _listaVariaveis;
-        public List<Value> ListaVariaveis
-        {
-            get
-            {
-                return _listaVariaveis;
-            }
-        }
-
-        public void AdicionarVariavel(Value Variavel)
-        {
-            _listaVariaveis.Add(Variavel);
-        }
-
-        public bool ExisteVariavel(Value Variavel)
-        {
-            bool retorno = false;
-
-            foreach (Value var in _listaVariaveis)
-            {
-                if (var.VariableName == Variavel.VariableName)
-                {
-                    retorno = true;
+                    value = variable;
                     break;
                 }
             }
 
-            return retorno;
+            return value;
         }
 
-        public bool ExisteVariavel(string Variavel)
+        public void AddVariable(Value variable)
         {
-            bool retorno = false;
+            _variables.Add(variable);
+        }
 
-            Value vl = new Value(Variavel, "0", null);
-            retorno = ExisteVariavel(vl);
+        public bool ContainsVariable(Value variable)
+        {
+            bool validator = false;
+            foreach (Value value in _variables)
+            {
+                if (value.VariableName == variable.VariableName)
+                {
+                    validator = true;
+                    break;
+                }
+            }
 
-            return retorno;
+            return validator;
+        }
+
+        public bool ContainsVariable(string variable)
+        {
+            Value value = new Value(variable, "0", null);
+            return ContainsVariable(value);
         }
     }
 }

@@ -116,9 +116,9 @@ namespace Sesamo.Analysis
                     {
                         SourceCode.Add(new Value(convertedNumber.ToString(), Types.Decimal, line));
                     }
-                    else if (variable.ExisteVariavel(value))
+                    else if (variable.ContainsVariable(value))
                     {
-                        Value valueVariable = variable.getVariavel(value).Copy();
+                        Value valueVariable = variable.GetVariable(value).Copy();
                         valueVariable.Line = line;
                         SourceCode.Add(valueVariable);
                     }
