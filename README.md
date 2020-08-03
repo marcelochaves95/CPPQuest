@@ -1,2 +1,2 @@
 # Sesamo
-Sesamo is a compiler built with C#, for learning purposes.
+Sesamo is a simple compiler written in C#, for learning purposes.
