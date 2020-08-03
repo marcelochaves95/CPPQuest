@@ -1,24 +1,17 @@
 namespace Sesamo.Operators.Comparisons
 {
-    public class Equal : Comparison, IOperator
+    public class Equal : Comparison
     {
-        #region IOperador Members
-
-        private string _cadeia = "==";
-        public override Chain Chain
-        {
-            get { return new Chain(_cadeia); }
-        }
-
-        #endregion
+        private const string _chain = "==";
+        public override Chain Chain => new Chain(_chain);
 
         public Equal()
         {
         }
 
-        public Equal(int NumeroLinha)
+        public Equal(int lineNumber)
         {
-            this.Linha = NumeroLinha;
+            Linha = lineNumber;
         }
     }
 }
