@@ -2,12 +2,8 @@ using Sesamo.Tokens;
 
 namespace Sesamo.Operators
 {
-    public abstract class Operator : Token, IOperator
+    public abstract class Operator : Token
     {
-        #region IOperador Members
-
         public abstract Chain Chain { get; }
-
-        #endregion
     }
 }
