@@ -39,7 +39,7 @@ namespace Sesamo.Analysis
 
                 foreach (Token token in code.Condition)
                 {
-                    exp.Append(token.Texto);
+                    exp.Append(token.Text);
                     exp.Append(" ");
                 }
                 dataRow["Condition"] = exp.ToString();
@@ -48,7 +48,7 @@ namespace Sesamo.Analysis
 
                 foreach (Token token in code.Expression)
                 {
-                    exp.Append(token.Texto);
+                    exp.Append(token.Text);
                     exp.Append(" ");
                 }
                 dataRow["Expression"] = exp.ToString();
@@ -57,7 +57,7 @@ namespace Sesamo.Analysis
 
                 foreach (Token token in code.UnmetConditionExpression)
                 {
-                    exp.Append(token.Texto);
+                    exp.Append(token.Text);
                     exp.Append(" ");
                 }
                 dataRow["ExpressionConditionNotMet"] = exp.ToString();

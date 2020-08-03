@@ -66,7 +66,7 @@ namespace Sesamo.Compilations
                     case Mathematics _:
                     case Logic _:
                     case Comparison _:
-                        builder.Append(token.Texto);
+                        builder.Append(token.Text);
                         break;
                 }
 
@@ -88,15 +88,15 @@ namespace Sesamo.Compilations
                 {
                     case Value value:
                         builder.Append(value.ValorVariavel);
-                        builderText.Append(value.Texto);
+                        builderText.Append(value.Text);
                         break;
                     case Mathematics _:
-                        builder.Append(token.Texto);
-                        builderText.Append(token.Texto);
+                        builder.Append(token.Text);
+                        builderText.Append(token.Text);
                         break;
                     case Comparison _:
-                        builder.Append(token.Texto);
-                        builderText.Append(token.Texto);
+                        builder.Append(token.Text);
+                        builderText.Append(token.Text);
                         break;
                 }
 
