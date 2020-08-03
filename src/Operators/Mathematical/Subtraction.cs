@@ -1,24 +1,17 @@
 namespace Sesamo.Operators.Mathematical
 {
-    public class Subtraction : Mathematics, IOperator
+    public class Subtraction : Mathematics
     {
-        #region IOperador Members
-
-        private string _cadeia = "-";
-        public override Chain Chain
-        {
-            get { return new Chain(_cadeia); }
-        }
-
-        #endregion
+        private const string _chain = "-";
+        public override Chain Chain => new Chain(_chain);
 
         public Subtraction()
         {
         }
 
-        public Subtraction(int NumeroLinha)
+        public Subtraction(int lineNumber)
         {
-            this.Linha = NumeroLinha;
+            Linha = lineNumber;
         }
     }
 }
