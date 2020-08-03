@@ -24,7 +24,7 @@ namespace Sesamo.Analysis
 
         private string GetChainRegularExpression()
         {
-            return @"(\" + '"'.ToString() + @"(\w|\.|\:|\,|\-|\+|\*|\/|\&|\(|\)|\%|\$|\#|\@|\!|\?|\<|\>|\;|\ )*\" + '"'.ToString() + @")|\w+";
+            return @"(\" + '"' + @"(\w|\.|\:|\,|\-|\+|\*|\/|\&|\(|\)|\%|\$|\#|\@|\!|\?|\<|\>|\;|\ )*\" + '"' + @")|\w+";
         }
 
         private string GetAllowsVariablePointRegularExpression()
